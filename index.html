@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Studio Max - Professional Cloud Suite</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Top Premium Brand Header -->
+    <header class="main-header">
+        <div class="brand">
+            <span class="logo-dot"></span>
+            <h1>AI STUDIO<span>MAX</span></h1>
+        </div>
+        <div class="system-badge">Engine: <span id="pipelineStatus">Pollinations Enterprise Core v8</span></div>
+    </header>
+
+    <!-- Interactive Before/After Preview Showcase Bar -->
+    <section class="showcase-bar">
+        <div class="showcase-container">
+            <div class="showcase-side before-side">
+                <span class="badge">BEFORE</span>
+                <p>Raw Uploaded Subject</p>
+            </div>
+            <div class="slider-divider-line"></div>
+            <div class="showcase-side after-side">
+                <span class="badge premium-badge">AFTER AI INJECTION</span>
+                <p>Hyper-Realistic Blended Cinematic Scene</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Workspace Architecture -->
+    <div class="workspace">
+        
+        <!-- Viewport Workspace (Left Panel) -->
+        <main class="canvas-viewport">
+            <div class="canvas-wrapper">
+                <canvas id="mainCanvas"></canvas>
+                
+                <!-- Full Glassmorphic System Loader -->
+                <div id="aiLoader" class="loader-matrix" style="display: none;">
+                    <div class="spinner-core"></div>
+                    <p id="loaderMessage">SYNCHRONIZING WITH AI MATRIX...</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Compact Control Matrix Sidebar (Right Panel) -->
+        <aside class="control-matrix">
+            
+            <!-- Card 1: Dedicated Image Upload Bar -->
+            <div class="control-card">
+                <div class="card-header">
+                    <span class="card-icon">📸</span>
+                    <h3>1. Source Media (Optional)</h3>
+                </div>
+                <div class="file-upload-wrapper">
+                    <input type="file" id="imageUploader" accept="image/*" onchange="handleLocalImageUpload(event)">
+                    <div class="custom-file-trigger">📂 Select Local Photo</div>
+                </div>
+                <div id="uploadFeedback" style="font-size:11px; color:#9ca3af; margin-top:5px; text-align:center;">No photo selected (AI will build standalone background).</div>
+            </div>
+
+            <!-- Card 2: Pro Resolution & Dimensions Presets Selector -->
+            <div class="control-card">
+                <div class="card-header">
+                    <span class="card-icon">📐</span>
+                    <h3>2. Canvas Resolution Preset</h3>
+                </div>
+                <select id="dimensionPreset" onchange="handlePresetDimensionChange()">
+                    <option value="1280x720" selected>YouTube Thumbnail (16:9) — 1280x720</option>
+                    <option value="1080x1080">Instagram Feed Post (1:1) — 1080x1080</option>
+                    <option value="720x1280">Instagram Stories / Reels (9:16) — 720x1280</option>
+                    <option value="1920x1080">Full HD Desktop Wallpaper (16:9) — 1920x1080</option>
+                </select>
+            </div>
+
+            <!-- Card 3: Merged High Performance AI Generation Engine -->
+            <div class="control-card premium-card">
+                <div class="card-header">
+                    <span class="card-icon">🪄</span>
+                    <h3>3. AI Magic Generation Engine</h3>
+                </div>
+                <div class="prompt-box-container">
+                    <textarea id="aiPrompt" rows="2" placeholder="Describe the background or complete scene... e.g., 'a supercar parked inside a neon-lit futuristic garage, cyberpunk style, hyperrealistic'"></textarea>
+                </div>
+                <button class="btn btn-primary-matrix" onclick="executeMergedAIPipeline()">GENERATE AI SCENE</button>
+                <div class="log-terminal">
+                    <span class="terminal-dot"></span>
+                    <p id="aiLog">Studio initialized. Awaiting commands...</p>
+                </div>
+            </div>
+
+            <!-- Card 4: Precision Typography & Draggable Overlay -->
+            <div class="control-card">
+                <div class="card-header">
+                    <span class="card-icon">📝</span>
+                    <h3>4. Typography Layer</h3>
+                </div>
+                <input type="text" id="textLayer" value="PREMIUM QUALITY" oninput="renderAll()">
+                
+                <div class="slider-node-item" style="margin-top:10px;">
+                    <div class="slider-label">Font Scale <span id="val-font">65px</span></div>
+                    <input type="range" id="sl-fontSize" min="20" max="150" value="65" oninput="renderAll()">
+                </div>
+
+                <div class="color-palette-grid">
+                    <button class="palette-btn p-white active" onclick="changeTextColor('#ffffff', this)">White</button>
+                    <button class="palette-btn p-yellow" onclick="changeTextColor('#facc15', this)">Yellow</button>
+                    <button class="palette-btn p-red" onclick="changeTextColor('#ef4444', this)">Red</button>
+                    <button class="palette-btn p-cyan" onclick="changeTextColor('#00f2fe', this)">Cyan</button>
+                </div>
+            </div>
+
+            <!-- Card 5: Lightroom Professional Color Grading Core -->
+            <div class="control-card">
+                <div class="card-header">
+                    <span class="card-icon">🎨</span>
+                    <h3>5. Lightroom Color Grading</h3>
+                </div>
+                <div class="grading-sliders-grid">
+                    <div class="slider-node-item">
+                        <div class="slider-label">Exposure <span id="val-bright">100%</span></div>
+                        <input type="range" id="sl-bright" min="50" max="200" value="100" oninput="renderAll()">
+                    </div>
+                    <div class="slider-node-item">
+                        <div class="slider-label">Contrast <span id="val-contrast">100%</span></div>
+                        <input type="range" id="sl-contrast" min="50" max="200" value="100" oninput="renderAll()">
+                    </div>
+                    <div class="slider-node-item">
+                        <div class="slider-label">Saturation <span id="val-saturate">100%</span></div>
+                        <input type="range" id="sl-saturate" min="0" max="250" value="100" oninput="renderAll()">
+                    </div>
+                    <div class="slider-node-item">
+                        <div class="slider-label">Hue Shift <span id="val-hue">0°</span></div>
+                        <input type="range" id="sl-hue" min="0" max="360" value="0" oninput="renderAll()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Master Action Hub -->
+            <div class="export-hub">
+                <button class="btn btn-master-download" onclick="downloadMasterHD()">💾 EXPORT PRODUCTION HD MASTER</button>
+            </div>
+        </aside>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
