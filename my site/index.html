@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DesignSmith AI Studio Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <canvas id="bgCanvas"></canvas>
+
+    <!-- 3D CHARACTER -->
+    <div id="charWrap" class="char-wrap">
+        <div id="charBubble" class="char-bubble">
+            <span id="charIcon">🤖</span>
+            <span id="charText">Welcome! 👑</span>
+        </div>
+        <canvas id="charCanvas" width="220" height="260"></canvas>
+    </div>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">
+                <div class="logo-ring"><span>DS</span></div>
+                <div class="logo-text">
+                    <h1>DesignSmith</h1>
+                    <span>AI STUDIO PRO</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-center">
+            <div class="header-tools">
+                <button class="ht-btn" onclick="addText()" title="Add Text"><span>T</span></button>
+                <div class="ht-sep"></div>
+                <button class="ht-btn" onclick="document.getElementById('quickImgUp').click()"
+                    title="Add Image"><span>🖼️</span></button>
+                <input type="file" id="quickImgUp" accept="image/*" style="display:none" onchange="addImg(event)">
+                <div class="ht-sep"></div>
+                <button class="ht-btn" onclick="triggerUndo()" title="Undo (Ctrl+Z)"><span>↩️</span></button>
+                <button class="ht-btn" onclick="triggerRedo()" title="Redo"><span>↪️</span></button>
+                <div class="ht-sep"></div>
+                <button class="ht-btn" onclick="exportHD()" title="Export"><span>💾</span></button>
+                <div class="ht-sep"></div>
+                <select id="canvasSizeSelect" class="header-select" onchange="headerSizeChange()">
+                    <option value="1280x720">1280×720</option>
+                    <option value="1080x1080">1080²</option>
+                    <option value="720x1280">720×1280</option>
+                    <option value="1920x1080">1920×1080</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme" id="themeBtn">🌙</button>
+            <button class="ht-btn danger" onclick="resetAll()" title="Reset">🧹</button>
+        </div>
+    </header>
+
+    <!-- MAIN LAYOUT -->
+    <div class="app-layout">
+
+        <!-- LEFT PANEL — AI & TOOLS -->
+        <aside class="panel panel-left" id="panelLeft">
+            <div class="panel-section">
+                <h3 class="section-title"><span>🪄</span> AI Generator</h3>
+                <div class="ai-prompt-wrap">
+                    <textarea id="aiPrompt" rows="2" placeholder="Describe your image..."></textarea>
+                    <button class="mic-btn" onclick="doVoice(event)">🎙️</button>
+                </div>
+                <div class="ai-options">
+                    <select id="aiMode">
+                        <option value="bg">🖼️ Background</option>
+                        <option value="layer">📌 Layer</option>
+                    </select>
+                    <select id="aiStyle">
+                        <option value="">Default</option>
+                        <option value=", photorealistic, 8k">📸 Photo</option>
+                        <option value=", cinematic lighting">🎬 Cinema</option>
+                        <option value=", digital art">🎨 Art</option>
+                        <option value=", anime style">🎌 Anime</option>
+                        <option value=", 3d render">🧊 3D</option>
+                    </select>
+                </div>
+                <button class="btn-primary" onclick="generateAI()">
+                    <span class="btn-shine"></span>⚡ Generate
+                </button>
+            </div>
+
+            <div class="panel-section">
+                <h3 class="section-title"><span>🤖</span> AI BG Remove</h3>
+                <div class="tool-pills">
+                    <button class="pill" onclick="bgRemove('color')">🎨 Color</button>
+                    <button class="pill" onclick="bgRemove('edge')">✂️ Edge</button>
+                    <button class="pill" onclick="bgRemove('bright')">💡 Bright</button>
+                    <button class="pill" onclick="bgRemove('smart')">🧠 Smart</button>
+                </div>
+                <div class="slider-row">
+                    <label>Tolerance</label>
+                    <input type="range" id="sl-tol" min="10" max="120" value="50"
+                        oninput="document.getElementById('v-tol').innerText=this.value">
+                    <span id="v-tol">50</span>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3 class="section-title"><span>🎨</span> Canvas Background</h3>
+                <div class="mini-tabs" id="bgTabBar">
+                    <button class="mt active" data-p="bgSolid"
+                        onclick="miniTab(this,'bgTabBar','bgPanels')">Solid</button>
+                    <button class="mt" data-p="bgGrad" onclick="miniTab(this,'bgTabBar','bgPanels')">Gradient</button>
+                    <button class="mt" data-p="bgPat" onclick="miniTab(this,'bgTabBar','bgPanels')">Pattern</button>
+                    <button class="mt" data-p="bgPre" onclick="miniTab(this,'bgTabBar','bgPanels')">Presets</button>
+                </div>
+                <div id="bgPanels">
+                    <div class="mp active" id="bgSolid">
+                        <div class="color-pick-row"><label>Color</label><input type="color" id="bgSC" value="#0a0f1e">
+                        </div>
+                        <button class="btn-sm" onclick="setBg('solid')">Apply</button>
+                    </div>
+                    <div class="mp" id="bgGrad">
+                        <div class="color-pick-row"><label>From</label><input type="color" id="bgG1" value="#00f2fe">
+                        </div>
+                        <div class="color-pick-row"><label>To</label><input type="color" id="bgG2" value="#7928ca">
+                        </div>
+                        <select id="bgGD">
+                            <option value="tb">↓ Vertical</option>
+                            <option value="lr">→ Horizontal</option>
+                            <option value="diag">↘ Diagonal</option>
+                            <option value="rad">◎ Radial</option>
+                        </select>
+                        <button class="btn-sm" onclick="setBg('grad')">Apply</button>
+                    </div>
+                    <div class="mp" id="bgPat">
+                        <div class="pattern-pills">
+                            <button class="ppill" onclick="setBg('pat','dots')">⚫</button>
+                            <button class="ppill" onclick="setBg('pat','grid')">⊞</button>
+                            <button class="ppill" onclick="setBg('pat','stripe')">≡</button>
+                            <button class="ppill" onclick="setBg('pat','check')">⬛</button>
+                            <button class="ppill" onclick="setBg('pat','diamond')">◆</button>
+                            <button class="ppill" onclick="setBg('pat','zigzag')">〰</button>
+                        </div>
+                        <div class="color-pick-row"><label>Line</label><input type="color" id="bgPC" value="#00f2fe">
+                        </div>
+                        <div class="color-pick-row"><label>Base</label><input type="color" id="bgPB" value="#0a0f1e">
+                        </div>
+                    </div>
+                    <div class="mp" id="bgPre">
+                        <div class="swatch-grid">
+                            <button class="sw" style="background:linear-gradient(135deg,#667eea,#764ba2)"
+                                onclick="preBg('#667eea','#764ba2')"></button>
+                            <button class="sw" style="background:linear-gradient(135deg,#f093fb,#f5576c)"
+                                onclick="preBg('#f093fb','#f5576c')"></button>
+                            <button class="sw" style="background:linear-gradient(135deg,#4facfe,#00f2fe)"
+                                onclick="preBg('#4facfe','#00f2fe')"></button>
+                            <button class="sw" style="background:linear-gradient(135deg,#43e97b,#38f9d7)"
+                                onclick="preBg('#43e97b','#38f9d7')"></button>
+                            <button class="sw" style="background:linear-gradient(135deg,#fa709a,#fee140)"
+                                onclick="preBg('#fa709a','#fee140')"></button>
+                            <button class="sw" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb)"
+                                onclick="preBg('#a18cd1','#fbc2eb')"></button>
+                            <button class="sw" style="background:#000" onclick="preBg('#000','#000')"></button>
+                            <button class="sw" style="background:#fff" onclick="preBg('#fff','#fff')"></button>
+                            <button class="sw" style="background:linear-gradient(135deg,#0c0c1d,#1a1a3e)"
+                                onclick="preBg('#0c0c1d','#1a1a3e')"></button>
+                            <button class="sw" style="background:linear-gradient(135deg,#ff0844,#ffb199)"
+                                onclick="preBg('#ff0844','#ffb199')"></button>
+                        </div>
+                        <button class="btn-sm danger" onclick="clearBg()">✕ Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="log-bar">
+                    <span class="log-dot"></span>
+                    <p id="logTxt">Ready to create...</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CANVAS AREA -->
+        <main class="canvas-area">
+            <div class="canvas-container">
+                <div class="canvas-frame" id="cvBox">
+                    <canvas id="mainCanvas"></canvas>
+                    <div id="loader" class="loader-overlay" style="display:none">
+                        <div class="loader-spinner"></div>
+                        <p id="ldrMsg">Processing...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="canvas-bottom-bar">
+                <button class="export-btn" onclick="exportHD()">
+                    <span>💾</span> Export HD PNG
+                </button>
+            </div>
+        </main>
+
+        <!-- RIGHT PANEL — PROPERTIES -->
+        <aside class="panel panel-right" id="panelRight">
+            <div class="panel-section">
+                <h3 class="section-title"><span>📋</span> Layers</h3>
+                <div class="upload-zone">
+                    <input type="file" accept="image/*" onchange="addImg(event)">
+                    <span>➕ Upload Image</span>
+                </div>
+                <div class="selected-info">
+                    Selected: <strong id="selLbl">None</strong>
+                </div>
+                <div class="layer-actions">
+                    <button onclick="layerOp('front')" title="Bring Front">⬆</button>
+                    <button onclick="layerOp('back')" title="Send Back">⬇</button>
+                    <button onclick="layerOp('copy')" title="Duplicate">📋</button>
+                    <button class="act-del" onclick="layerOp('del')" title="Delete">🗑️</button>
+                </div>
+                <div class="align-actions">
+                    <button onclick="alignEl('l')" title="Left">⬅</button>
+                    <button onclick="alignEl('c')" title="Center H">↔</button>
+                    <button onclick="alignEl('r')" title="Right">➡</button>
+                    <button onclick="alignEl('m')" title="Center V">↕</button>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3 class="section-title"><span>📏</span> Transform</h3>
+                <div class="slider-row"><label>Scale</label><input type="range" id="sl-sc" min="10" max="300"
+                        value="100" oninput="setProp('scale',this.value)"><span id="v-sc">100%</span></div>
+                <div class="slider-row"><label>Rotate</label><input type="range" id="sl-rt" min="0" max="360" value="0"
+                        oninput="setProp('rotate',this.value)"><span id="v-rt">0°</span></div>
+                <div class="slider-row"><label>Opacity</label><input type="range" id="sl-op" min="0" max="100"
+                        value="100" oninput="setProp('opacity',this.value)"><span id="v-op">100%</span></div>
+            </div>
+
+            <div class="panel-section">
+                <h3 class="section-title"><span>✏️</span> Text</h3>
+                <button class="btn-sm accent" onclick="addText()">➕ Add Text</button>
+                <input type="text" id="txtIn" placeholder="Edit text content..." oninput="setTxt(this.value)"
+                    class="text-input">
+                <div class="color-pick-row"><label>Color</label><input type="color" id="txtCol" value="#00f2fe"
+                        onchange="setProp('color',this.value)"></div>
+                <select id="fontSel" onchange="setProp('font',this.value)" class="font-select">
+                    <option value="Arial">Arial</option>
+                    <option value="Impact">Impact</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="Verdana">Verdana</option>
+                    <option value="Courier New">Courier New</option>
+                    <option value="Times New Roman">Times New Roman</option>
+                    <option value="Comic Sans MS">Comic Sans MS</option>
+                </select>
+                <div class="upload-zone small">
+                    <input type="file" accept=".ttf,.otf,.woff,.woff2" onchange="upFont(event)">
+                    <span>📂 Upload Font</span>
+                </div>
+                <div class="slider-row"><label>Spacing</label><input type="range" id="sl-sp" min="-5" max="30" value="0"
+                        oninput="setProp('charSpacing',this.value)"><span id="v-sp">0px</span></div>
+                <div class="slider-row"><label>Curve</label><input type="range" id="sl-cu" min="-180" max="180"
+                        value="0" oninput="setProp('curve',this.value)"><span id="v-cu">0°</span></div>
+            </div>
+
+            <div class="panel-section">
+                <h3 class="section-title"><span>✨</span> Effects</h3>
+                <div class="slider-row"><label>Stroke</label><input type="range" id="sl-st" min="0" max="15" value="2"
+                        oninput="setProp('stroke',this.value)"><span id="v-st">2px</span></div>
+                <div class="color-pick-row"><label>Stroke</label><input type="color" id="stCol" value="#000000"
+                        onchange="setProp('strokeColor',this.value)"></div>
+                <div class="slider-row"><label>3D Depth</label><input type="range" id="sl-3d" min="0" max="25" value="0"
+                        oninput="setProp('threeDDepth',this.value)"><span id="v-3d">0px</span></div>
+                <div class="color-pick-row"><label>3D</label><input type="color" id="tdCol" value="#1e293b"
+                        onchange="setProp('threeDColor',this.value)"></div>
+                <div class="slider-row"><label>Glow</label><input type="range" id="sl-gw" min="0" max="40" value="8"
+                        oninput="setProp('glow',this.value)"><span id="v-gw">8px</span></div>
+                <div class="color-pick-row"><label>Glow</label><input type="color" id="gwCol" value="#00f2fe"
+                        onchange="setProp('glowColor',this.value)"></div>
+                <div class="slider-row"><label>Emboss</label><input type="range" id="sl-em" min="0" max="10" value="0"
+                        oninput="setProp('emboss',this.value)"><span id="v-em">0px</span></div>
+                <div class="slider-row"><label>Reflect</label><input type="range" id="sl-rf" min="0" max="80" value="0"
+                        oninput="setProp('reflection',this.value)"><span id="v-rf">0%</span></div>
+            </div>
+
+            <div class="panel-section">
+                <h3 class="section-title"><span>🧽</span> Mask / Erase</h3>
+                <div class="mode-select">
+                    <button class="mode-btn active" onclick="setMode('select',this)">👉</button>
+                    <button class="mode-btn" onclick="setMode('eraser',this)">🧽</button>
+                    <button class="mode-btn" onclick="setMode('mask',this)">✂️</button>
+                </div>
+                <div class="slider-row"><label>Brush</label><input type="range" id="sl-br" min="5" max="100" value="25"
+                        oninput="bSz=+this.value;document.getElementById('v-br').innerText=this.value+'px'"><span
+                        id="v-br">25px</span></div>
+                <button class="btn-sm" onclick="restMask()">🔄 Restore Erased</button>
+            </div>
+        </aside>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="footer-logo">DS</div>
+                <div>
+                    <strong>DesignSmith AI Studio</strong>
+                    <small>Professional Design Tool</small>
+                </div>
+            </div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <a href="mailto:hello@designsmith.ai">📧 hello@designsmith.ai</a>
+                    <a href="tel:+919876543210">📞 +91 98765 43210</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Social</h4>
+                    <a href="#">𝕏 Twitter</a>
+                    <a href="#">📸 Instagram</a>
+                </div>
+                <div class="footer-col">
+                    <h4>More</h4>
+                    <a href="#">💼 LinkedIn</a>
+                    <a href="#">🐙 GitHub</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2025 DesignSmith AI. All rights reserved.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
