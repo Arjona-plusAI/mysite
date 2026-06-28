@@ -1,333 +1,458 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DesignSmith AI Studio Pro</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DesignSmith AI Studio</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
     <canvas id="bgCanvas"></canvas>
 
-    <!-- 3D CHARACTER -->
-    <div id="charWrap" class="char-wrap">
-        <div id="charBubble" class="char-bubble">
-            <span id="charIcon">🤖</span>
-            <span id="charText">Welcome! 👑</span>
+    <!-- 360° ALGORITHMIC 3D CHARACTER -->
+    <div id="assistantCharacter" class="assistant-character">
+        <div id="characterBubble" class="character-bubble">
+            <span id="characterMoodIcon">🤖</span>
+            <span id="characterBubbleText">Welcome Boss! 👑</span>
         </div>
-        <canvas id="charCanvas" width="220" height="260"></canvas>
+        <canvas id="characterCanvas" width="240" height="260"></canvas>
     </div>
 
-    <!-- HEADER -->
-    <header class="header">
-        <div class="header-left">
-            <div class="logo">
-                <div class="logo-ring"><span>DS</span></div>
-                <div class="logo-text">
-                    <h1>DesignSmith</h1>
-                    <span>AI STUDIO PRO</span>
-                </div>
-            </div>
+    <header class="main-header">
+        <div class="brand">
+            <span class="logo-dot"></span>
+            <h1>DESIGNSMITH AI</h1>
         </div>
 
-        <div class="header-center">
-            <div class="header-tools">
-                <button class="ht-btn" onclick="addText()" title="Add Text"><span>T</span></button>
-                <div class="ht-sep"></div>
-                <button class="ht-btn" onclick="document.getElementById('quickImgUp').click()"
-                    title="Add Image"><span>🖼️</span></button>
-                <input type="file" id="quickImgUp" accept="image/*" style="display:none" onchange="addImg(event)">
-                <div class="ht-sep"></div>
-                <button class="ht-btn" onclick="triggerUndo()" title="Undo (Ctrl+Z)"><span>↩️</span></button>
-                <button class="ht-btn" onclick="triggerRedo()" title="Redo"><span>↪️</span></button>
-                <div class="ht-sep"></div>
-                <button class="ht-btn" onclick="exportHD()" title="Export"><span>💾</span></button>
-                <div class="ht-sep"></div>
-                <select id="canvasSizeSelect" class="header-select" onchange="headerSizeChange()">
-                    <option value="1280x720">1280×720</option>
-                    <option value="1080x1080">1080²</option>
-                    <option value="720x1280">720×1280</option>
-                    <option value="1920x1080">1920×1080</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="header-right">
-            <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme" id="themeBtn">🌙</button>
-            <button class="ht-btn danger" onclick="resetAll()" title="Reset">🧹</button>
-        </div>
+        <nav class="header-nav">
+            <button class="action-nav-btn" onclick="triggerUndo()">↩️ Undo</button>
+            <button class="action-nav-btn" onclick="triggerRedo()">↪️ Redo</button>
+            <button class="action-nav-btn reset-btn" onclick="resetStudioWorkspace()">🧹 Reset</button>
+        </nav>
     </header>
 
-    <!-- MAIN LAYOUT -->
-    <div class="app-layout">
-
-        <!-- LEFT PANEL — AI & TOOLS -->
-        <aside class="panel panel-left" id="panelLeft">
-            <div class="panel-section">
-                <h3 class="section-title"><span>🪄</span> AI Generator</h3>
-                <div class="ai-prompt-wrap">
-                    <textarea id="aiPrompt" rows="2" placeholder="Describe your image..."></textarea>
-                    <button class="mic-btn" onclick="doVoice(event)">🎙️</button>
-                </div>
-                <div class="ai-options">
-                    <select id="aiMode">
-                        <option value="bg">🖼️ Background</option>
-                        <option value="layer">📌 Layer</option>
-                    </select>
-                    <select id="aiStyle">
-                        <option value="">Default</option>
-                        <option value=", photorealistic, 8k">📸 Photo</option>
-                        <option value=", cinematic lighting">🎬 Cinema</option>
-                        <option value=", digital art">🎨 Art</option>
-                        <option value=", anime style">🎌 Anime</option>
-                        <option value=", 3d render">🧊 3D</option>
-                    </select>
-                </div>
-                <button class="btn-primary" onclick="generateAI()">
-                    <span class="btn-shine"></span>⚡ Generate
-                </button>
-            </div>
-
-            <div class="panel-section">
-                <h3 class="section-title"><span>🤖</span> AI BG Remove</h3>
-                <div class="tool-pills">
-                    <button class="pill" onclick="bgRemove('color')">🎨 Color</button>
-                    <button class="pill" onclick="bgRemove('edge')">✂️ Edge</button>
-                    <button class="pill" onclick="bgRemove('bright')">💡 Bright</button>
-                    <button class="pill" onclick="bgRemove('smart')">🧠 Smart</button>
-                </div>
-                <div class="slider-row">
-                    <label>Tolerance</label>
-                    <input type="range" id="sl-tol" min="10" max="120" value="50"
-                        oninput="document.getElementById('v-tol').innerText=this.value">
-                    <span id="v-tol">50</span>
-                </div>
-            </div>
-
-            <div class="panel-section">
-                <h3 class="section-title"><span>🎨</span> Canvas Background</h3>
-                <div class="mini-tabs" id="bgTabBar">
-                    <button class="mt active" data-p="bgSolid"
-                        onclick="miniTab(this,'bgTabBar','bgPanels')">Solid</button>
-                    <button class="mt" data-p="bgGrad" onclick="miniTab(this,'bgTabBar','bgPanels')">Gradient</button>
-                    <button class="mt" data-p="bgPat" onclick="miniTab(this,'bgTabBar','bgPanels')">Pattern</button>
-                    <button class="mt" data-p="bgPre" onclick="miniTab(this,'bgTabBar','bgPanels')">Presets</button>
-                </div>
-                <div id="bgPanels">
-                    <div class="mp active" id="bgSolid">
-                        <div class="color-pick-row"><label>Color</label><input type="color" id="bgSC" value="#0a0f1e">
-                        </div>
-                        <button class="btn-sm" onclick="setBg('solid')">Apply</button>
-                    </div>
-                    <div class="mp" id="bgGrad">
-                        <div class="color-pick-row"><label>From</label><input type="color" id="bgG1" value="#00f2fe">
-                        </div>
-                        <div class="color-pick-row"><label>To</label><input type="color" id="bgG2" value="#7928ca">
-                        </div>
-                        <select id="bgGD">
-                            <option value="tb">↓ Vertical</option>
-                            <option value="lr">→ Horizontal</option>
-                            <option value="diag">↘ Diagonal</option>
-                            <option value="rad">◎ Radial</option>
-                        </select>
-                        <button class="btn-sm" onclick="setBg('grad')">Apply</button>
-                    </div>
-                    <div class="mp" id="bgPat">
-                        <div class="pattern-pills">
-                            <button class="ppill" onclick="setBg('pat','dots')">⚫</button>
-                            <button class="ppill" onclick="setBg('pat','grid')">⊞</button>
-                            <button class="ppill" onclick="setBg('pat','stripe')">≡</button>
-                            <button class="ppill" onclick="setBg('pat','check')">⬛</button>
-                            <button class="ppill" onclick="setBg('pat','diamond')">◆</button>
-                            <button class="ppill" onclick="setBg('pat','zigzag')">〰</button>
-                        </div>
-                        <div class="color-pick-row"><label>Line</label><input type="color" id="bgPC" value="#00f2fe">
-                        </div>
-                        <div class="color-pick-row"><label>Base</label><input type="color" id="bgPB" value="#0a0f1e">
-                        </div>
-                    </div>
-                    <div class="mp" id="bgPre">
-                        <div class="swatch-grid">
-                            <button class="sw" style="background:linear-gradient(135deg,#667eea,#764ba2)"
-                                onclick="preBg('#667eea','#764ba2')"></button>
-                            <button class="sw" style="background:linear-gradient(135deg,#f093fb,#f5576c)"
-                                onclick="preBg('#f093fb','#f5576c')"></button>
-                            <button class="sw" style="background:linear-gradient(135deg,#4facfe,#00f2fe)"
-                                onclick="preBg('#4facfe','#00f2fe')"></button>
-                            <button class="sw" style="background:linear-gradient(135deg,#43e97b,#38f9d7)"
-                                onclick="preBg('#43e97b','#38f9d7')"></button>
-                            <button class="sw" style="background:linear-gradient(135deg,#fa709a,#fee140)"
-                                onclick="preBg('#fa709a','#fee140')"></button>
-                            <button class="sw" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb)"
-                                onclick="preBg('#a18cd1','#fbc2eb')"></button>
-                            <button class="sw" style="background:#000" onclick="preBg('#000','#000')"></button>
-                            <button class="sw" style="background:#fff" onclick="preBg('#fff','#fff')"></button>
-                            <button class="sw" style="background:linear-gradient(135deg,#0c0c1d,#1a1a3e)"
-                                onclick="preBg('#0c0c1d','#1a1a3e')"></button>
-                            <button class="sw" style="background:linear-gradient(135deg,#ff0844,#ffb199)"
-                                onclick="preBg('#ff0844','#ffb199')"></button>
-                        </div>
-                        <button class="btn-sm danger" onclick="clearBg()">✕ Reset</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel-section">
-                <div class="log-bar">
-                    <span class="log-dot"></span>
-                    <p id="logTxt">Ready to create...</p>
-                </div>
-            </div>
-        </aside>
-
-        <!-- CANVAS AREA -->
-        <main class="canvas-area">
-            <div class="canvas-container">
-                <div class="canvas-frame" id="cvBox">
+    <div class="workspace">
+        <main class="canvas-viewport">
+            <div class="canvas-wrapper-container">
+                <div class="canvas-wrapper" id="canvasWrapperBox">
                     <canvas id="mainCanvas"></canvas>
-                    <div id="loader" class="loader-overlay" style="display:none">
-                        <div class="loader-spinner"></div>
-                        <p id="ldrMsg">Processing...</p>
+
+                    <div id="aiLoader" class="loader-matrix" style="display:none;">
+                        <div class="spinner-core"></div>
+                        <p id="loaderMessage">PROCESSING...</p>
                     </div>
                 </div>
-            </div>
-            <div class="canvas-bottom-bar">
-                <button class="export-btn" onclick="exportHD()">
-                    <span>💾</span> Export HD PNG
-                </button>
+
+                <div class="mobile-export-zone">
+                    <button class="btn btn-master-download" onclick="exportStudioPNG()">💾 EXPORT HD</button>
+                </div>
             </div>
         </main>
 
-        <!-- RIGHT PANEL — PROPERTIES -->
-        <aside class="panel panel-right" id="panelRight">
-            <div class="panel-section">
-                <h3 class="section-title"><span>📋</span> Layers</h3>
-                <div class="upload-zone">
-                    <input type="file" accept="image/*" onchange="addImg(event)">
-                    <span>➕ Upload Image</span>
+        <aside class="control-matrix">
+            <!-- AI GENERATOR -->
+            <div class="control-card premium-card">
+                <div class="card-header">
+                    <span class="card-icon">🪄</span>
+                    <h3>AI Image Generator</h3>
                 </div>
-                <div class="selected-info">
-                    Selected: <strong id="selLbl">None</strong>
-                </div>
-                <div class="layer-actions">
-                    <button onclick="layerOp('front')" title="Bring Front">⬆</button>
-                    <button onclick="layerOp('back')" title="Send Back">⬇</button>
-                    <button onclick="layerOp('copy')" title="Duplicate">📋</button>
-                    <button class="act-del" onclick="layerOp('del')" title="Delete">🗑️</button>
-                </div>
-                <div class="align-actions">
-                    <button onclick="alignEl('l')" title="Left">⬅</button>
-                    <button onclick="alignEl('c')" title="Center H">↔</button>
-                    <button onclick="alignEl('r')" title="Right">➡</button>
-                    <button onclick="alignEl('m')" title="Center V">↕</button>
-                </div>
-            </div>
 
-            <div class="panel-section">
-                <h3 class="section-title"><span>📏</span> Transform</h3>
-                <div class="slider-row"><label>Scale</label><input type="range" id="sl-sc" min="10" max="300"
-                        value="100" oninput="setProp('scale',this.value)"><span id="v-sc">100%</span></div>
-                <div class="slider-row"><label>Rotate</label><input type="range" id="sl-rt" min="0" max="360" value="0"
-                        oninput="setProp('rotate',this.value)"><span id="v-rt">0°</span></div>
-                <div class="slider-row"><label>Opacity</label><input type="range" id="sl-op" min="0" max="100"
-                        value="100" oninput="setProp('opacity',this.value)"><span id="v-op">100%</span></div>
-            </div>
+                <div class="prompt-box-container">
+                    <textarea id="aiPrompt" rows="2" placeholder="Describe your scene or object..."></textarea>
+                    <button id="voiceBtn" class="voice-input-btn" onclick="startSpeechToText(event)">🎙️</button>
+                </div>
 
-            <div class="panel-section">
-                <h3 class="section-title"><span>✏️</span> Text</h3>
-                <button class="btn-sm accent" onclick="addText()">➕ Add Text</button>
-                <input type="text" id="txtIn" placeholder="Edit text content..." oninput="setTxt(this.value)"
-                    class="text-input">
-                <div class="color-pick-row"><label>Color</label><input type="color" id="txtCol" value="#00f2fe"
-                        onchange="setProp('color',this.value)"></div>
-                <select id="fontSel" onchange="setProp('font',this.value)" class="font-select">
-                    <option value="Arial">Arial</option>
-                    <option value="Impact">Impact</option>
-                    <option value="Georgia">Georgia</option>
-                    <option value="Verdana">Verdana</option>
-                    <option value="Courier New">Courier New</option>
-                    <option value="Times New Roman">Times New Roman</option>
-                    <option value="Comic Sans MS">Comic Sans MS</option>
+                <select id="aiGenerateMode">
+                    <option value="background" selected>🖼️ Generate as Background</option>
+                    <option value="layer">📌 Generate as New Layer</option>
                 </select>
-                <div class="upload-zone small">
-                    <input type="file" accept=".ttf,.otf,.woff,.woff2" onchange="upFont(event)">
-                    <span>📂 Upload Font</span>
+
+                <select id="aiStyleSelect">
+                    <option value="">Default Style</option>
+                    <option value=", photorealistic, 8k, ultra hd, realistic lighting, high detail">📸 Photorealistic HD
+                    </option>
+                    <option value=", cinematic, dramatic lighting, movie still, ultra detailed">🎬 Cinematic</option>
+                    <option value=", digital art, concept art, hyper detailed illustration">🎨 Digital Art</option>
+                    <option value=", anime style, manga, sharp lineart, vivid colors">🎌 Anime</option>
+                    <option value=", 3d render, octane render, volumetric lighting">🧊 3D Render</option>
+                    <option value=", watercolor art, soft color wash, artistic brush strokes">💧 Watercolor</option>
+                    <option value=", pixel art, retro game, 16bit style">👾 Pixel Art</option>
+                </select>
+
+                <button class="btn btn-primary-matrix" onclick="generateAiImage()">⚡ GENERATE AI IMAGE</button>
+
+                <div class="log-terminal">
+                    <span class="terminal-dot"></span>
+                    <p id="aiLog">Studio ready. Awaiting commands...</p>
                 </div>
-                <div class="slider-row"><label>Spacing</label><input type="range" id="sl-sp" min="-5" max="30" value="0"
-                        oninput="setProp('charSpacing',this.value)"><span id="v-sp">0px</span></div>
-                <div class="slider-row"><label>Curve</label><input type="range" id="sl-cu" min="-180" max="180"
-                        value="0" oninput="setProp('curve',this.value)"><span id="v-cu">0°</span></div>
             </div>
 
-            <div class="panel-section">
-                <h3 class="section-title"><span>✨</span> Effects</h3>
-                <div class="slider-row"><label>Stroke</label><input type="range" id="sl-st" min="0" max="15" value="2"
-                        oninput="setProp('stroke',this.value)"><span id="v-st">2px</span></div>
-                <div class="color-pick-row"><label>Stroke</label><input type="color" id="stCol" value="#000000"
-                        onchange="setProp('strokeColor',this.value)"></div>
-                <div class="slider-row"><label>3D Depth</label><input type="range" id="sl-3d" min="0" max="25" value="0"
-                        oninput="setProp('threeDDepth',this.value)"><span id="v-3d">0px</span></div>
-                <div class="color-pick-row"><label>3D</label><input type="color" id="tdCol" value="#1e293b"
-                        onchange="setProp('threeDColor',this.value)"></div>
-                <div class="slider-row"><label>Glow</label><input type="range" id="sl-gw" min="0" max="40" value="8"
-                        oninput="setProp('glow',this.value)"><span id="v-gw">8px</span></div>
-                <div class="color-pick-row"><label>Glow</label><input type="color" id="gwCol" value="#00f2fe"
-                        onchange="setProp('glowColor',this.value)"></div>
-                <div class="slider-row"><label>Emboss</label><input type="range" id="sl-em" min="0" max="10" value="0"
-                        oninput="setProp('emboss',this.value)"><span id="v-em">0px</span></div>
-                <div class="slider-row"><label>Reflect</label><input type="range" id="sl-rf" min="0" max="80" value="0"
-                        oninput="setProp('reflection',this.value)"><span id="v-rf">0%</span></div>
+            <!-- AI TOOLS -->
+            <div class="control-card">
+                <div class="card-header">
+                    <span class="card-icon">🤖</span>
+                    <h3>AI Smart Tools</h3>
+                </div>
+
+                <button class="btn small-tool-btn" onclick="executeAutoAiBgRemove('color')">🎨 Color BG Remove</button>
+                <button class="btn small-tool-btn" onclick="executeAutoAiBgRemove('edge')">✂️ Edge Detect
+                    Remove</button>
+                <button class="btn small-tool-btn" onclick="executeAutoAiBgRemove('brightness')">💡 Brightness
+                    Remove</button>
+                <button class="btn small-tool-btn" onclick="executeAutoAiBgRemove('smart')">🧠 Smart AI Remove</button>
+
+                <div class="slider-node-item" style="margin-top:8px;">
+                    <div class="slider-label">Tolerance <span id="v-tolerance">50</span></div>
+                    <input type="range" id="sl-tolerance" min="10" max="120" value="50"
+                        oninput="document.getElementById('v-tolerance').innerText=this.value">
+                </div>
             </div>
 
-            <div class="panel-section">
-                <h3 class="section-title"><span>🧽</span> Mask / Erase</h3>
-                <div class="mode-select">
-                    <button class="mode-btn active" onclick="setMode('select',this)">👉</button>
-                    <button class="mode-btn" onclick="setMode('eraser',this)">🧽</button>
-                    <button class="mode-btn" onclick="setMode('mask',this)">✂️</button>
+            <!-- RESOLUTION -->
+            <div class="control-card">
+                <div class="card-header">
+                    <span class="card-icon">📐</span>
+                    <h3>Canvas Resolution</h3>
                 </div>
-                <div class="slider-row"><label>Brush</label><input type="range" id="sl-br" min="5" max="100" value="25"
-                        oninput="bSz=+this.value;document.getElementById('v-br').innerText=this.value+'px'"><span
-                        id="v-br">25px</span></div>
-                <button class="btn-sm" onclick="restMask()">🔄 Restore Erased</button>
+
+                <select id="dimensionPreset" onchange="handlePresetDimensionChange()">
+                    <option value="1280x720" selected>YouTube 1280×720</option>
+                    <option value="1080x1080">Instagram 1080×1080</option>
+                    <option value="720x1280">Stories 720×1280</option>
+                    <option value="1920x1080">Full HD 1920×1080</option>
+                    <option value="800x600">Standard 800×600</option>
+                    <option value="custom">Custom...</option>
+                </select>
+
+                <div id="customSizeRow" style="display:none; margin-top:6px;">
+                    <div style="display:flex; gap:6px;">
+                        <input type="number" id="customW" value="1280" placeholder="Width" style="flex:1;">
+                        <span style="align-self:center;color:#64748b;">×</span>
+                        <input type="number" id="customH" value="720" placeholder="Height" style="flex:1;">
+                    </div>
+                    <button class="btn small-tool-btn" style="margin-top:6px;" onclick="applyCustomSize()">Apply Custom
+                        Size</button>
+                </div>
+            </div>
+
+            <!-- CANVAS BACKGROUND -->
+            <div class="control-card">
+                <div class="card-header">
+                    <span class="card-icon">🎨</span>
+                    <h3>Canvas Background</h3>
+                </div>
+
+                <div class="bg-mode-tabs">
+                    <button class="bg-tab-btn active" onclick="switchBackgroundTab('solid', this)">Solid</button>
+                    <button class="bg-tab-btn" onclick="switchBackgroundTab('gradient', this)">Gradient</button>
+                    <button class="bg-tab-btn" onclick="switchBackgroundTab('pattern', this)">Pattern</button>
+                    <button class="bg-tab-btn" onclick="switchBackgroundTab('presets', this)">Presets</button>
+                </div>
+
+                <div class="bg-tab-panel active" id="bgPanelSolid">
+                    <div class="color-row">
+                        <span class="mini-label">Color</span>
+                        <input type="color" id="bgSolidColor" value="#0a0f1e">
+                    </div>
+                    <button class="btn small-tool-btn" onclick="applyCanvasBackground('solid')">Apply Solid</button>
+                </div>
+
+                <div class="bg-tab-panel" id="bgPanelGradient">
+                    <div class="color-row">
+                        <span class="mini-label">Color 1</span>
+                        <input type="color" id="bgGradColor1" value="#00f2fe">
+                    </div>
+                    <div class="color-row">
+                        <span class="mini-label">Color 2</span>
+                        <input type="color" id="bgGradColor2" value="#7928ca">
+                    </div>
+                    <select id="bgGradientDirection">
+                        <option value="tb">↓ Top → Bottom</option>
+                        <option value="lr">→ Left → Right</option>
+                        <option value="diag">↘ Diagonal</option>
+                        <option value="rad">◎ Radial</option>
+                    </select>
+                    <button class="btn small-tool-btn" style="margin-top:6px;"
+                        onclick="applyCanvasBackground('gradient')">Apply Gradient</button>
+                </div>
+
+                <div class="bg-tab-panel" id="bgPanelPattern">
+                    <div class="pattern-grid">
+                        <button class="pattern-btn" onclick="applyCanvasBackground('pattern','dots')">⚫ Dots</button>
+                        <button class="pattern-btn" onclick="applyCanvasBackground('pattern','grid')">⊞ Grid</button>
+                        <button class="pattern-btn" onclick="applyCanvasBackground('pattern','stripe')">≡
+                            Stripes</button>
+                        <button class="pattern-btn" onclick="applyCanvasBackground('pattern','check')">⬛ Check</button>
+                        <button class="pattern-btn" onclick="applyCanvasBackground('pattern','diamond')">◆
+                            Diamond</button>
+                        <button class="pattern-btn" onclick="applyCanvasBackground('pattern','zigzag')">〰
+                            Zigzag</button>
+                    </div>
+
+                    <div class="color-row">
+                        <span class="mini-label">Pattern</span>
+                        <input type="color" id="bgPatternColor" value="#00f2fe">
+                    </div>
+                    <div class="color-row">
+                        <span class="mini-label">Base</span>
+                        <input type="color" id="bgPatternBase" value="#0a0f1e">
+                    </div>
+                </div>
+
+                <div class="bg-tab-panel" id="bgPanelPresets">
+                    <div class="preset-grid">
+                        <button class="preset-swatch" style="background:linear-gradient(135deg,#667eea,#764ba2)"
+                            onclick="applyPresetBackground('#667eea','#764ba2')"></button>
+                        <button class="preset-swatch" style="background:linear-gradient(135deg,#f093fb,#f5576c)"
+                            onclick="applyPresetBackground('#f093fb','#f5576c')"></button>
+                        <button class="preset-swatch" style="background:linear-gradient(135deg,#4facfe,#00f2fe)"
+                            onclick="applyPresetBackground('#4facfe','#00f2fe')"></button>
+                        <button class="preset-swatch" style="background:linear-gradient(135deg,#43e97b,#38f9d7)"
+                            onclick="applyPresetBackground('#43e97b','#38f9d7')"></button>
+                        <button class="preset-swatch" style="background:linear-gradient(135deg,#fa709a,#fee140)"
+                            onclick="applyPresetBackground('#fa709a','#fee140')"></button>
+                        <button class="preset-swatch" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb)"
+                            onclick="applyPresetBackground('#a18cd1','#fbc2eb')"></button>
+                        <button class="preset-swatch" style="background:linear-gradient(135deg,#fccb90,#d57eeb)"
+                            onclick="applyPresetBackground('#fccb90','#d57eeb')"></button>
+                        <button class="preset-swatch" style="background:linear-gradient(135deg,#ff9a9e,#fad0c4)"
+                            onclick="applyPresetBackground('#ff9a9e','#fad0c4')"></button>
+                        <button class="preset-swatch" style="background:#000000"
+                            onclick="applyPresetBackground('#000000','#000000')"></button>
+                        <button class="preset-swatch" style="background:#ffffff"
+                            onclick="applyPresetBackground('#ffffff','#ffffff')"></button>
+                        <button class="preset-swatch" style="background:linear-gradient(135deg,#0c0c1d,#1a1a3e)"
+                            onclick="applyPresetBackground('#0c0c1d','#1a1a3e')"></button>
+                        <button class="preset-swatch" style="background:linear-gradient(135deg,#ff0844,#ffb199)"
+                            onclick="applyPresetBackground('#ff0844','#ffb199')"></button>
+                    </div>
+                    <button class="btn small-tool-btn danger-mini" onclick="clearCanvasBackground()">✕ Reset
+                        Background</button>
+                </div>
+            </div>
+
+            <!-- TOOLKIT -->
+            <div class="control-card">
+                <div class="card-header" style="border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:6px;">
+                    <span class="card-icon">⚙️</span>
+                    <h3>Design Toolkit</h3>
+                </div>
+
+                <div class="toolkit-tabs-row">
+                    <button class="toolkit-tab-btn active" onclick="switchToolkitTab('layers', this)">Layers</button>
+                    <button class="toolkit-tab-btn" onclick="switchToolkitTab('text', this)">Text</button>
+                    <button class="toolkit-tab-btn" onclick="switchToolkitTab('effects', this)">3D / FX</button>
+                    <button class="toolkit-tab-btn" onclick="switchToolkitTab('mask', this)">Mask</button>
+                </div>
+
+                <!-- LAYERS TAB -->
+                <div class="toolkit-panel active" id="toolkitLayers">
+                    <div class="file-upload-wrapper" style="margin-bottom:8px;">
+                        <input type="file" id="imageUploader" accept="image/*" onchange="addNewImageLayer(event)">
+                        <div class="custom-file-trigger">➕ Upload Image Layer</div>
+                    </div>
+
+                    <div class="slider-label" style="margin-bottom:6px;">
+                        Selected: <span id="selectedLayerLabel" style="color:#00f2fe;">None</span>
+                    </div>
+
+                    <div class="action-grid-buttons">
+                        <button class="tool-action-btn" onclick="executeLayerAction('front')">Front</button>
+                        <button class="tool-action-btn" onclick="executeLayerAction('back')">Back</button>
+                        <button class="tool-action-btn" onclick="executeLayerAction('copy')">Copy</button>
+                        <button class="tool-action-btn delete-action"
+                            onclick="executeLayerAction('delete')">Delete</button>
+                    </div>
+
+                    <div class="action-grid-buttons" style="margin-top:4px;">
+                        <button class="tool-action-btn" onclick="alignElementRelative('left')">⬅</button>
+                        <button class="tool-action-btn" onclick="alignElementRelative('center')">↔</button>
+                        <button class="tool-action-btn" onclick="alignElementRelative('right')">➡</button>
+                        <button class="tool-action-btn" onclick="alignElementRelative('middle')">↕</button>
+                    </div>
+
+                    <div class="slider-node-item" style="margin-top:8px;">
+                        <div class="slider-label">Scale <span id="v-scale">100%</span></div>
+                        <input type="range" id="sl-scale" min="10" max="300" value="100"
+                            oninput="updateSelectedElementProperty('scale', this.value)">
+                    </div>
+
+                    <div class="slider-node-item">
+                        <div class="slider-label">Rotation <span id="v-rotate">0°</span></div>
+                        <input type="range" id="sl-rotate" min="0" max="360" value="0"
+                            oninput="updateSelectedElementProperty('rotate', this.value)">
+                    </div>
+
+                    <div class="slider-node-item">
+                        <div class="slider-label">Opacity <span id="v-opacity">100%</span></div>
+                        <input type="range" id="sl-opacity" min="0" max="100" value="100"
+                            oninput="updateSelectedElementProperty('opacity', this.value)">
+                    </div>
+
+                    <div class="character-control-box">
+                        <div class="slider-label" style="color:#00f2fe; font-weight:700;">🤖 3D Character Controls</div>
+
+                        <div class="slider-node-item">
+                            <div class="slider-label">Rotation Speed <span id="v-char-speed">0.9</span></div>
+                            <input type="range" id="sl-char-speed" min="0" max="4" step="0.1" value="0.9"
+                                oninput="updateCharacterSetting('speed', this.value)">
+                        </div>
+
+                        <div class="slider-node-item">
+                            <div class="slider-label">Character Scale <span id="v-char-scale">100%</span></div>
+                            <input type="range" id="sl-char-scale" min="50" max="180" value="100"
+                                oninput="updateCharacterSetting('scale', this.value)">
+                        </div>
+
+                        <div class="slider-node-item">
+                            <div class="slider-label">Glow / Shadow <span id="v-char-glow">18px</span></div>
+                            <input type="range" id="sl-char-glow" min="0" max="60" value="18"
+                                oninput="updateCharacterSetting('glow', this.value)">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TEXT TAB -->
+                <div class="toolkit-panel" id="toolkitText">
+                    <button class="btn small-tool-btn special-mini" onclick="addNewTextLayer()">➕ Add New Text</button>
+
+                    <input type="text" id="textInputSync" placeholder="Edit text..."
+                        oninput="updateSelectedTextContent(this.value)">
+
+                    <div class="color-row" style="margin-top:6px;">
+                        <span class="mini-label">Color</span>
+                        <input type="color" id="textColorPicker" value="#00f2fe"
+                            onchange="updateSelectedElementProperty('color', this.value)">
+                    </div>
+
+                    <select id="fontFamilySelect" onchange="updateSelectedElementProperty('font', this.value)">
+                        <option value="Arial">Arial</option>
+                        <option value="Impact">Impact</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Verdana">Verdana</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Comic Sans MS">Comic Sans MS</option>
+                    </select>
+
+                    <div class="file-upload-wrapper" style="margin-top:6px; height:28px;">
+                        <input type="file" id="fontUploader" accept=".ttf,.otf,.woff,.woff2"
+                            onchange="uploadFontFile(event)">
+                        <div class="custom-file-trigger" style="font-size:10px;">📂 Upload Font</div>
+                    </div>
+
+                    <div class="slider-node-item" style="margin-top:6px;">
+                        <div class="slider-label">Spacing <span id="v-charspacing">0px</span></div>
+                        <input type="range" id="sl-charspacing" min="-5" max="30" value="0"
+                            oninput="updateSelectedElementProperty('charSpacing', this.value)">
+                    </div>
+
+                    <div class="slider-node-item">
+                        <div class="slider-label">Curve <span id="v-curve">0°</span></div>
+                        <input type="range" id="sl-curve" min="-180" max="180" value="0"
+                            oninput="updateSelectedElementProperty('curve', this.value)">
+                    </div>
+
+                    <div class="file-upload-wrapper" style="margin-top:6px; height:28px;">
+                        <input type="file" id="textureUploader" accept="image/*"
+                            onchange="applyTextureToSelectedText(event)">
+                        <div class="custom-file-trigger" style="font-size:10px;">🖼️ Texture Fill</div>
+                    </div>
+
+                    <button class="btn small-tool-btn danger-mini" style="margin-top:4px;"
+                        onclick="removeTextureFromSelectedText()">✕ Remove Texture</button>
+                </div>
+
+                <!-- EFFECTS TAB -->
+                <div class="toolkit-panel" id="toolkitEffects">
+                    <div class="slider-node-item">
+                        <div class="slider-label">Stroke <span id="v-stroke">2px</span></div>
+                        <input type="range" id="sl-stroke" min="0" max="15" value="2"
+                            oninput="updateSelectedElementProperty('stroke', this.value)">
+                    </div>
+
+                    <div class="color-row">
+                        <span class="mini-label">Stroke</span>
+                        <input type="color" id="strokeColorPicker" value="#000000"
+                            onchange="updateSelectedElementProperty('strokeColor', this.value)">
+                    </div>
+
+                    <div class="slider-node-item">
+                        <div class="slider-label">Inner Shadow <span id="v-innershadow">0px</span></div>
+                        <input type="range" id="sl-innershadow" min="0" max="20" value="0"
+                            oninput="updateSelectedElementProperty('innerShadow', this.value)">
+                    </div>
+
+                    <div class="slider-node-item">
+                        <div class="slider-label">Emboss <span id="v-emboss">0px</span></div>
+                        <input type="range" id="sl-emboss" min="0" max="10" value="0"
+                            oninput="updateSelectedElementProperty('emboss', this.value)">
+                    </div>
+
+                    <div class="slider-node-item">
+                        <div class="slider-label">3D Depth <span id="v-3dtext">0px</span></div>
+                        <input type="range" id="sl-3dtext" min="0" max="25" value="0"
+                            oninput="updateSelectedElementProperty('threeDDepth', this.value)">
+                    </div>
+
+                    <div class="slider-node-item">
+                        <div class="slider-label">3D Tilt <span id="v-3drotate">0°</span></div>
+                        <input type="range" id="sl-3drotate" min="-45" max="45" value="0"
+                            oninput="updateSelectedElementProperty('threeDRotate', this.value)">
+                    </div>
+
+                    <div class="color-row">
+                        <span class="mini-label">3D Color</span>
+                        <input type="color" id="threeDColorPicker" value="#1e293b"
+                            onchange="updateSelectedElementProperty('threeDColor', this.value)">
+                    </div>
+
+                    <div class="slider-node-item">
+                        <div class="slider-label">3D Shadow <span id="v-3dshadow">0px</span></div>
+                        <input type="range" id="sl-3dshadow" min="0" max="30" value="0"
+                            oninput="updateSelectedElementProperty('threeDShadow', this.value)">
+                    </div>
+
+                    <div class="slider-node-item">
+                        <div class="slider-label">Reflect <span id="v-reflection">0%</span></div>
+                        <input type="range" id="sl-reflection" min="0" max="80" value="0"
+                            oninput="updateSelectedElementProperty('reflection', this.value)">
+                    </div>
+
+                    <div class="slider-node-item">
+                        <div class="slider-label">Glow <span id="v-glow">8px</span></div>
+                        <input type="range" id="sl-glow" min="0" max="40" value="8"
+                            oninput="updateSelectedElementProperty('glow', this.value)">
+                    </div>
+
+                    <div class="color-row">
+                        <span class="mini-label">Glow</span>
+                        <input type="color" id="glowColorPicker" value="#00f2fe"
+                            onchange="updateSelectedElementProperty('glowColor', this.value)">
+                    </div>
+                </div>
+
+                <!-- MASK TAB -->
+                <div class="toolkit-panel" id="toolkitMask">
+                    <select id="canvasModeSelect" onchange="switchCanvasMode(this.value)">
+                        <option value="select" selected>👉 Select</option>
+                        <option value="eraser">🧽 Eraser</option>
+                        <option value="mask">✂️ Mask</option>
+                    </select>
+
+                    <div class="slider-node-item" style="margin-top:6px;">
+                        <div class="slider-label">Brush <span id="v-brush">25px</span></div>
+                        <input type="range" id="sl-brush" min="5" max="100" value="25"
+                            oninput="updateBrushSize(this.value)">
+                    </div>
+
+                    <button class="btn small-tool-btn" onclick="restoreSelectedMask()">🔄 Restore Mask</button>
+                </div>
             </div>
         </aside>
     </div>
-
-    <!-- FOOTER -->
-    <footer class="footer">
-        <div class="footer-inner">
-            <div class="footer-brand">
-                <div class="footer-logo">DS</div>
-                <div>
-                    <strong>DesignSmith AI Studio</strong>
-                    <small>Professional Design Tool</small>
-                </div>
-            </div>
-            <div class="footer-links">
-                <div class="footer-col">
-                    <h4>Contact</h4>
-                    <a href="mailto:hello@designsmith.ai">📧 hello@designsmith.ai</a>
-                    <a href="tel:+919876543210">📞 +91 98765 43210</a>
-                </div>
-                <div class="footer-col">
-                    <h4>Social</h4>
-                    <a href="#">𝕏 Twitter</a>
-                    <a href="#">📸 Instagram</a>
-                </div>
-                <div class="footer-col">
-                    <h4>More</h4>
-                    <a href="#">💼 LinkedIn</a>
-                    <a href="#">🐙 GitHub</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <span>© 2025 DesignSmith AI. All rights reserved.</span>
-            </div>
-        </div>
-    </footer>
 
     <script src="script.js"></script>
 </body>

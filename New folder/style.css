@@ -1,0 +1,322 @@
+/* --- AI STUDIO MAX: INDUSTRIAL SYSTEM CSS --- */
+:root {
+    --surface-bg: #030712;
+    --card-bg: #0b1329;
+    --card-border: rgba(255, 255, 255, 0.06);
+    --accent-cyan: #00f2fe;
+    --accent-neon: #9d4edd;
+    --text-primary: #f9fafb;
+    --text-muted: #9ca3af;
+    --sidebar-width: 360px; /* Highly optimized custom compact width for layout spacing */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--surface-bg);
+    color: var(--text-primary);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Header Node Styles */
+.main-header {
+    height: 55px;
+    background: #070d1e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--card-border);
+    z-index: 20;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--accent-cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--accent-cyan);
+}
+
+.brand h1 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.brand h1 span {
+    color: var(--accent-cyan);
+    font-weight: 400;
+}
+
+.system-badge {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    background: rgba(255,255,255,0.03);
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--card-border);
+}
+
+/* Before / After Showcase Horizontal Bar */
+.showcase-bar {
+    background: linear-gradient(90deg, #090f22, #050914);
+    border-bottom: 1px solid var(--card-border);
+    padding: 8px 20px;
+}
+
+.showcase-container {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.showcase-side {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.showcase-side p {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.badge {
+    font-size: 0.65rem;
+    background: #374151;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 700;
+}
+
+.premium-badge {
+    background: linear-gradient(135deg, #00f2fe, #9d4edd);
+    color: black;
+}
+
+.slider-divider-line {
+    width: 40px;
+    height: 2px;
+    background: rgba(255,255,255,0.15);
+    position: relative;
+}
+
+/* Master Grid Workspace Layout */
+.workspace {
+    display: flex;
+    flex: 1;
+    height: calc(100vh - 90px);
+    overflow: hidden;
+}
+
+/* Left Canvas Viewport Area */
+.canvas-viewport {
+    flex: 1;
+    background: #02040a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+    overflow: auto;
+}
+
+.canvas-wrapper {
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+    border-radius: 6px;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+canvas {
+    display: block;
+    max-width: 100%;
+    max-height: 80vh;
+    border-radius: 6px;
+}
+
+/* Compact Control Panel Matrix (Right Panel Layout) */
+.control-matrix {
+    width: var(--sidebar-width);
+    background: #070c19;
+    border-left: 1px solid var(--card-border);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+.control-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.premium-card {
+    border-color: rgba(0, 242, 254, 0.2);
+    background: linear-gradient(180deg, #0b1329 0%, #0c1735 100%);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.card-icon { font-size: 0.9rem; }
+
+.card-header h3 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    letter-spacing: 0.5px;
+}
+
+/* Component Level Styles inside Cards */
+select, input[type="text"], textarea {
+    width: 100%;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 8px 10px;
+    border-radius: 6px;
+    color: white;
+    font-size: 0.8rem;
+    outline: none;
+    transition: all 0.2s;
+}
+
+select:focus, input[type="text"]:focus, textarea:focus {
+    border-color: var(--accent-cyan);
+}
+
+/* Custom Image Upload Button Architecture */
+.file-upload-wrapper {
+    position: relative;
+    width: 100%;
+    height: 35px;
+    overflow: hidden;
+}
+
+.file-upload-wrapper input[type="file"] {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    opacity: 0; cursor: pointer; z-index: 2;
+}
+
+.custom-file-trigger {
+    width: 100%; height: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px dashed rgba(255,255,255,0.2);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 600; color: var(--text-primary);
+}
+.file-upload-wrapper:hover .custom-file-trigger {
+    border-color: var(--accent-cyan); background: rgba(0,242,254,0.02);
+}
+
+/* Button Variants */
+.btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+}
+.btn:hover { transform: translateY(-1px); opacity: 0.95; }
+
+.btn-primary-matrix {
+    background: linear-gradient(135deg, var(--accent-cyan), #0077ff);
+    color: #030712;
+}
+
+.btn-master-download {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    padding: 12px;
+    font-size: 0.85rem;
+    border: none; border-radius: 6px; width: 100%; font-weight: 700; cursor: pointer;
+}
+
+/* Sliders Sub-Grids Configuration */
+.slider-node-item {
+    margin-bottom: 8px;
+}
+.slider-label {
+    display: flex; justify-content: space-between;
+    font-size: 0.7rem; color: var(--text-muted); margin-bottom: 3px;
+}
+.slider-label span { color: var(--accent-cyan); font-weight: bold; }
+
+input[type="range"] {
+    width: 100%; accent-color: var(--accent-cyan); height: 4px;
+}
+
+/* Color palettes selector items */
+.color-palette-grid {
+    display: flex; gap: 5px; margin-top: 8px;
+}
+.palette-btn {
+    flex: 1; padding: 4px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);
+    background: transparent; color: white; font-size: 0.65rem; cursor: pointer;
+}
+.palette-btn.active { border-color: var(--accent-cyan); background: rgba(0,242,254,0.1); font-weight: bold;}
+
+/* Log Terminal System Display */
+.log-terminal {
+    background: rgba(0,0,0,0.3); padding: 6px 10px; border-radius: 4px;
+    margin-top: 8px; display: flex; align-items: center; gap: 6px; border-left: 2px solid var(--accent-cyan);
+}
+.terminal-dot { width: 5px; height: 5px; background: #eab308; border-radius: 50%; }
+.log-terminal p { font-size: 0.7rem; color: #00f2fe; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Fixed Layering System Loader Box Styles */
+.loader-matrix {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    background: rgba(3, 7, 18, 0.9); padding: 20px 30px; border-radius: 8px;
+    border: 1px solid rgba(0, 242, 254, 0.2); text-align: center; z-index: 10;
+    display: flex; flex-direction: column; align-items: center; gap: 12px; backdrop-filter: blur(4px);
+}
+.loader-matrix p { font-size: 0.75rem; color: var(--accent-cyan); letter-spacing: 1px; font-weight: 600; }
+.spinner-core {
+    width: 35px; height: 35px; border: 3px solid rgba(0,242,254,0.1);
+    border-top: 3px solid var(--accent-cyan); border-radius: 50%; animation: spin 0.8s linear infinite;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* --- RESPONSIVE ADAPTABILITY GRID (MOBILE CONFIGURATION VIEWPORT) --- */
+@media (max-width: 768px) {
+    body { overflow-y: auto; height: auto; }
+    .workspace { flex-direction: column; height: auto; overflow: visible; }
+    .control-matrix { width: 100%; border-left: none; border-top: 1px solid var(--card-border); height: auto; overflow: visible; }
+    canvas { max-height: 50vh; }
+    .showcase-bar { display: none; } /* Compact display optimization for smaller viewports */
+}

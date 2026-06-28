@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DesignSmith AI Studio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="bgCanvas"></canvas>
+
+    <div id="globalOwl" class="owl-wrap">
+        <div id="owlBubble" class="owl-bub"><span id="owlEmoji">🦉</span> <span id="owlMsg">Welcome! 👑</span></div>
+        <div id="owlBody" class="owl-char">🦉</div>
+    </div>
+
+    <div id="drawModal" class="modal-bg" style="display:none">
+        <div class="modal-card">
+            <div class="modal-top"><h3>✍️ Handwriting Pad</h3><button class="modal-x" onclick="closeDrawPad()">✕</button></div>
+            <canvas id="drawPad" width="700" height="280"></canvas>
+            <div class="modal-row">
+                <div class="color-row"><span class="lbl-s">Pen</span><input type="color" id="penColor" value="#ffffff" class="cpk"></div>
+                <div class="sld-item" style="flex:1"><div class="sld-lbl">Size <span id="v-pen">4</span></div><input type="range" id="sl-pen" min="1" max="20" value="4" oninput="document.getElementById('v-pen').innerText=this.value"></div>
+                <button class="btn btn-sm" onclick="clearPad()">Clear</button>
+                <button class="btn btn-accent" onclick="applyDrawing()">Apply</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="gradeModal" class="modal-bg" style="display:none">
+        <div class="modal-card modal-lg">
+            <div class="modal-top"><h3>🎬 Color Grading</h3><button class="modal-x" onclick="closeGrade()">✕</button></div>
+            <div class="grade-wrap">
+                <div class="grade-left">
+                    <h4>Manual</h4>
+                    <div class="sld-item"><div class="sld-lbl">Brightness <span id="vg-br">0</span></div><input type="range" id="sg-br" min="-100" max="100" value="0" oninput="gradePreview()"></div>
+                    <div class="sld-item"><div class="sld-lbl">Contrast <span id="vg-ct">0</span></div><input type="range" id="sg-ct" min="-100" max="100" value="0" oninput="gradePreview()"></div>
+                    <div class="sld-item"><div class="sld-lbl">Saturation <span id="vg-sa">0</span></div><input type="range" id="sg-sa" min="-100" max="100" value="0" oninput="gradePreview()"></div>
+                    <div class="sld-item"><div class="sld-lbl">Temperature <span id="vg-te">0</span></div><input type="range" id="sg-te" min="-50" max="50" value="0" oninput="gradePreview()"></div>
+                    <div class="sld-item"><div class="sld-lbl">Tint <span id="vg-ti">0</span></div><input type="range" id="sg-ti" min="-50" max="50" value="0" oninput="gradePreview()"></div>
+                    <div class="sld-item"><div class="sld-lbl">Vignette <span id="vg-vi">0</span></div><input type="range" id="sg-vi" min="0" max="100" value="0" oninput="gradePreview()"></div>
+                    <div class="sld-item"><div class="sld-lbl">Grain <span id="vg-gr">0</span></div><input type="range" id="sg-gr" min="0" max="50" value="0" oninput="gradePreview()"></div>
+                </div>
+                <div class="grade-right">
+                    <h4>AI Presets</h4>
+                    <div class="gp-grid">
+                        <button class="gp-btn" onclick="gradeAI('cinematic')">🎬 Cinematic</button>
+                        <button class="gp-btn" onclick="gradeAI('vintage')">📷 Vintage</button>
+                        <button class="gp-btn" onclick="gradeAI('warm')">🌅 Warm</button>
+                        <button class="gp-btn" onclick="gradeAI('cool')">❄️ Cool</button>
+                        <button class="gp-btn" onclick="gradeAI('noir')">🖤 Noir</button>
+                        <button class="gp-btn" onclick="gradeAI('pastel')">🎀 Pastel</button>
+                        <button class="gp-btn" onclick="gradeAI('neon')">💜 Neon</button>
+                        <button class="gp-btn" onclick="gradeAI('sepia')">🟤 Sepia</button>
+                        <button class="gp-btn" onclick="gradeAI('summer')">☀️ Summer</button>
+                        <button class="gp-btn" onclick="gradeAI('ocean')">🌊 Ocean</button>
+                        <button class="gp-btn" onclick="gradeAI('golden')">✨ Golden</button>
+                        <button class="gp-btn" onclick="gradeAI('cyberpunk')">🤖 Cyberpunk</button>
+                        <button class="gp-btn" onclick="gradeAI('dreamy')">💫 Dreamy</button>
+                        <button class="gp-btn" onclick="gradeAI('hdr')">📸 HDR</button>
+                        <button class="gp-btn" onclick="gradeAI('horror')">👻 Horror</button>
+                        <button class="gp-btn" onclick="gradeAI('forest')">🌲 Forest</button>
+                    </div>
+                    <button class="btn btn-sm" style="margin-top:6px;color:#f87171" onclick="gradeReset()">✕ Reset</button>
+                </div>
+            </div>
+            <div class="modal-row"><button class="btn btn-accent" onclick="gradeApply()">✅ Apply</button><button class="btn btn-sm" onclick="closeGrade()">Cancel</button></div>
+        </div>
+    </div>
+
+    <header class="hdr">
+        <div class="brand"><span class="dot"></span><h1>DESIGNSMITH AI</h1></div>
+        <nav class="hnav">
+            <button class="hbtn" onclick="undo()">↩️</button>
+            <button class="hbtn" onclick="redo()">↪️</button>
+            <button class="hbtn hbtn-r" onclick="resetAll()">🧹</button>
+        </nav>
+    </header>
+
+    <div class="work">
+        <main class="cvp">
+            <div class="cvc">
+                <div class="cvw" id="cvBox">
+                    <canvas id="mainCanvas"></canvas>
+                    <div id="loader" class="ldr" style="display:none"><div class="spin"></div><p id="ldrMsg">...</p></div>
+                </div>
+                <button class="btn btn-exp" onclick="exportHD()">💾 EXPORT HD</button>
+            </div>
+        </main>
+
+        <aside class="side">
+
+            <div class="card card-p">
+                <div class="ch"><span>🪄</span><h3>AI Image Generator</h3></div>
+                <div class="prw"><textarea id="aiPrompt" rows="2" placeholder="Describe image..."></textarea><button class="vbtn" onclick="doVoice(event)">🎙️</button></div>
+                <div class="ai-row"><select id="aiMode"><option value="bg">🖼️ Background</option><option value="layer">📌 Layer</option></select></div>
+                <div class="ai-row"><select id="aiStyle"><option value="">Default</option><option value=", photorealistic, 8k, ultra HD">📸 Photo HD</option><option value=", cinematic lighting, dramatic">🎬 Cinematic</option><option value=", digital art, illustration">🎨 Digital Art</option><option value=", anime style, manga">🎌 Anime</option><option value=", 3d render, volumetric">🧊 3D Render</option><option value=", watercolor, artistic">💧 Watercolor</option><option value=", pixel art, retro">👾 Pixel</option></select></div>
+                <button class="btn btn-accent" onclick="generateAI()">⚡ GENERATE</button>
+                <div class="logb"><span class="logd"></span><p id="logTxt">Ready...</p></div>
+            </div>
+
+            <div class="card">
+                <div class="ch"><span>🤖</span><h3>AI Tools</h3></div>
+                <button class="btn btn-t" onclick="bgRemove('color')">🎨 Color BG Remove</button>
+                <button class="btn btn-t" onclick="bgRemove('edge')">✂️ Edge Remove</button>
+                <button class="btn btn-t" onclick="bgRemove('bright')">💡 Brightness Remove</button>
+                <button class="btn btn-t" onclick="bgRemove('smart')">🧠 Smart Remove</button>
+                <button class="btn btn-t" onclick="openGrade()">🎬 Color Grading</button>
+                <div class="sld-item" style="margin-top:4px"><div class="sld-lbl">Tolerance <span id="v-tol">50</span></div><input type="range" id="sl-tol" min="10" max="120" value="50" oninput="document.getElementById('v-tol').innerText=this.value"></div>
+            </div>
+
+            <div class="card">
+                <div class="ch"><span>📐</span><h3>Canvas Size</h3></div>
+                <select id="dimPre" onchange="chgSize()"><option value="1280x720" selected>1280×720</option><option value="1080x1080">1080×1080</option><option value="720x1280">720×1280</option><option value="1920x1080">1920×1080</option><option value="800x600">800×600</option><option value="custom">Custom</option></select>
+                <div id="cusRow" style="display:none;margin-top:4px"><div style="display:flex;gap:4px"><input type="number" id="cusW" value="1280" style="flex:1"><span style="color:#666;align-self:center">×</span><input type="number" id="cusH" value="720" style="flex:1"></div><button class="btn btn-t" style="margin-top:3px" onclick="applyCus()">Apply</button></div>
+            </div>
+
+            <div class="card">
+                <div class="ch"><span>🎨</span><h3>Canvas Background</h3></div>
+                <div class="tabs" id="bgTabBar">
+                    <button class="tab act" data-t="pSolid" onclick="tabSwitch(this,'bgTabBar','bgPanels')">Solid</button>
+                    <button class="tab" data-t="pGrad" onclick="tabSwitch(this,'bgTabBar','bgPanels')">Gradient</button>
+                    <button class="tab" data-t="pPat" onclick="tabSwitch(this,'bgTabBar','bgPanels')">Pattern</button>
+                    <button class="tab" data-t="pPre" onclick="tabSwitch(this,'bgTabBar','bgPanels')">Presets</button>
+                </div>
+                <div id="bgPanels">
+                    <div class="pan act" id="pSolid">
+                        <div class="color-row"><span class="lbl-s">Color</span><input type="color" id="bgSolC" value="#0a0f1e" class="cpk"></div>
+                        <button class="btn btn-t" onclick="applyBg('solid')">Apply Solid</button>
+                    </div>
+                    <div class="pan" id="pGrad">
+                        <div class="color-row"><span class="lbl-s">Color 1</span><input type="color" id="bgGr1" value="#00f2fe" class="cpk"></div>
+                        <div class="color-row"><span class="lbl-s">Color 2</span><input type="color" id="bgGr2" value="#7928ca" class="cpk"></div>
+                        <select id="bgGrD"><option value="tb">↓ Top→Bottom</option><option value="lr">→ Left→Right</option><option value="diag">↘ Diagonal</option><option value="rad">◎ Radial</option></select>
+                        <button class="btn btn-t" style="margin-top:3px" onclick="applyBg('grad')">Apply Gradient</button>
+                    </div>
+                    <div class="pan" id="pPat">
+                        <div class="pgrid">
+                            <button class="pbtn" onclick="applyBg('pat','dots')">⚫ Dots</button>
+                            <button class="pbtn" onclick="applyBg('pat','grid')">⊞ Grid</button>
+                            <button class="pbtn" onclick="applyBg('pat','stripe')">≡ Stripes</button>
+                            <button class="pbtn" onclick="applyBg('pat','check')">⬛ Check</button>
+                            <button class="pbtn" onclick="applyBg('pat','diamond')">◆ Diamond</button>
+                            <button class="pbtn" onclick="applyBg('pat','zigzag')">〰 Zigzag</button>
+                        </div>
+                        <div class="color-row"><span class="lbl-s">Pattern</span><input type="color" id="bgPaC" value="#00f2fe" class="cpk"></div>
+                        <div class="color-row"><span class="lbl-s">Base</span><input type="color" id="bgPaB" value="#0a0f1e" class="cpk"></div>
+                    </div>
+                    <div class="pan" id="pPre">
+                        <div class="prgrid">
+                            <button class="prsw" style="background:linear-gradient(135deg,#667eea,#764ba2)" onclick="preBg('#667eea','#764ba2')"></button>
+                            <button class="prsw" style="background:linear-gradient(135deg,#f093fb,#f5576c)" onclick="preBg('#f093fb','#f5576c')"></button>
+                            <button class="prsw" style="background:linear-gradient(135deg,#4facfe,#00f2fe)" onclick="preBg('#4facfe','#00f2fe')"></button>
+                            <button class="prsw" style="background:linear-gradient(135deg,#43e97b,#38f9d7)" onclick="preBg('#43e97b','#38f9d7')"></button>
+                            <button class="prsw" style="background:linear-gradient(135deg,#fa709a,#fee140)" onclick="preBg('#fa709a','#fee140')"></button>
+                            <button class="prsw" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb)" onclick="preBg('#a18cd1','#fbc2eb')"></button>
+                            <button class="prsw" style="background:linear-gradient(135deg,#fccb90,#d57eeb)" onclick="preBg('#fccb90','#d57eeb')"></button>
+                            <button class="prsw" style="background:linear-gradient(135deg,#ff9a9e,#fad0c4)" onclick="preBg('#ff9a9e','#fad0c4')"></button>
+                            <button class="prsw" style="background:#000" onclick="preBg('#000000','#000000')"></button>
+                            <button class="prsw" style="background:#fff" onclick="preBg('#ffffff','#ffffff')"></button>
+                            <button class="prsw" style="background:linear-gradient(135deg,#0c0c1d,#1a1a3e)" onclick="preBg('#0c0c1d','#1a1a3e')"></button>
+                            <button class="prsw" style="background:linear-gradient(135deg,#ff0844,#ffb199)" onclick="preBg('#ff0844','#ffb199')"></button>
+                        </div>
+                        <button class="btn btn-t" style="color:#f87171" onclick="clearBg()">✕ Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="ch" style="border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:4px"><span>⚙️</span><h3>Design Toolkit</h3></div>
+                <div class="tabs" id="tkTabBar">
+                    <button class="tab act" data-t="tLay" onclick="tabSwitch(this,'tkTabBar','tkPanels')">Layers</button>
+                    <button class="tab" data-t="tTxt" onclick="tabSwitch(this,'tkTabBar','tkPanels')">Text</button>
+                    <button class="tab" data-t="tFx" onclick="tabSwitch(this,'tkTabBar','tkPanels')">3D/FX</button>
+                    <button class="tab" data-t="tMask" onclick="tabSwitch(this,'tkTabBar','tkPanels')">Mask</button>
+                </div>
+                <div id="tkPanels">
+                    <div class="pan act" id="tLay">
+                        <div class="fwrap" style="margin-bottom:6px"><input type="file" accept="image/*" onchange="addImg(event)"><div class="ftrig">➕ Upload Image</div></div>
+                        <div class="sld-lbl" style="margin-bottom:4px">Selected: <span id="selLbl" style="color:#00f2fe">None</span></div>
+                        <div class="bgrid"><button class="gbtn" onclick="layerOp('front')">Front</button><button class="gbtn" onclick="layerOp('back')">Back</button><button class="gbtn" onclick="layerOp('copy')">Copy</button><button class="gbtn dbtn" onclick="layerOp('del')">Del</button></div>
+                        <div class="bgrid" style="margin-top:2px"><button class="gbtn" onclick="alignEl('l')">⬅</button><button class="gbtn" onclick="alignEl('c')">↔</button><button class="gbtn" onclick="alignEl('r')">➡</button><button class="gbtn" onclick="alignEl('m')">↕</button></div>
+                        <div class="sld-item" style="margin-top:6px"><div class="sld-lbl">Scale <span id="v-sc">100%</span></div><input type="range" id="sl-sc" min="10" max="300" value="100" oninput="setProp('scale',this.value)"></div>
+                        <div class="sld-item"><div class="sld-lbl">Rotate <span id="v-rt">0°</span></div><input type="range" id="sl-rt" min="0" max="360" value="0" oninput="setProp('rotate',this.value)"></div>
+                        <div class="sld-item"><div class="sld-lbl">Opacity <span id="v-op">100%</span></div><input type="range" id="sl-op" min="0" max="100" value="100" oninput="setProp('opacity',this.value)"></div>
+                        <div class="owl-sec">
+                            <div class="sld-lbl" style="color:#00f2fe;font-weight:700">🦉 Owl Shadow</div>
+                            <div class="sld-item"><div class="sld-lbl">Blur <span id="v-ob">10px</span></div><input type="range" id="sl-ob" min="0" max="60" value="10" oninput="owlSet('b',this.value)"></div>
+                            <div class="sld-item"><div class="sld-lbl">X <span id="v-ox">0px</span></div><input type="range" id="sl-ox" min="-40" max="40" value="0" oninput="owlSet('x',this.value)"></div>
+                            <div class="sld-item"><div class="sld-lbl">Y <span id="v-oy">3px</span></div><input type="range" id="sl-oy" min="-40" max="40" value="3" oninput="owlSet('y',this.value)"></div>
+                            <div class="color-row"><span class="lbl-s">Color</span><input type="color" id="owlSC" value="#00f2fe" class="cpk" onchange="owlSet('c',this.value)"></div>
+                        </div>
+                    </div>
+
+                    <div class="pan" id="tTxt">
+                        <button class="btn btn-t" style="color:#00f2fe;border-color:rgba(0,242,254,.2);margin-bottom:4px" onclick="addText()">➕ Add Text</button>
+                        <button class="btn btn-t" style="margin-bottom:4px" onclick="openDrawPad()">✍️ Draw Pad</button>
+                        <input type="text" id="txtIn" placeholder="Edit text..." oninput="setTxt(this.value)">
+                        <div class="color-row" style="margin-top:4px"><span class="lbl-s">Color</span><input type="color" id="txtCol" value="#00f2fe" class="cpk" onchange="setProp('color',this.value)"></div>
+                        <div class="sel-i" style="margin-top:3px"><select id="fontSel" onchange="setProp('font',this.value)"><option value="Arial">Arial</option><option value="Impact">Impact</option><option value="Georgia">Georgia</option><option value="Verdana">Verdana</option><option value="Courier New">Courier New</option><option value="Times New Roman">Times New Roman</option><option value="Comic Sans MS">Comic Sans MS</option></select></div>
+                        <div class="fwrap" style="margin-top:4px;height:24px"><input type="file" accept=".ttf,.otf,.woff,.woff2" onchange="upFont(event)"><div class="ftrig" style="font-size:10px">📂 Upload Font</div></div>
+                        <div class="sld-item" style="margin-top:4px"><div class="sld-lbl">Spacing <span id="v-sp">0px</span></div><input type="range" id="sl-sp" min="-5" max="30" value="0" oninput="setProp('charSpacing',this.value)"></div>
+                        <div class="sld-item"><div class="sld-lbl">Curve <span id="v-cu">0°</span></div><input type="range" id="sl-cu" min="-180" max="180" value="0" oninput="setProp('curve',this.value)"></div>
+                        <div class="fwrap" style="height:24px"><input type="file" accept="image/*" onchange="addTex(event)"><div class="ftrig" style="font-size:10px">🖼️ Texture</div></div>
+                        <button class="btn btn-t" style="color:#f87171;font-size:10px;padding:2px;margin-top:2px" onclick="rmTex()">✕ Remove</button>
+                    </div>
+
+                    <div class="pan" id="tFx">
+                        <div class="sld-item"><div class="sld-lbl">Stroke <span id="v-st">2px</span></div><input type="range" id="sl-st" min="0" max="15" value="2" oninput="setProp('stroke',this.value)"></div>
+                        <div class="color-row"><span class="lbl-s">Stroke</span><input type="color" id="stCol" value="#000000" class="cpk" onchange="setProp('strokeColor',this.value)"></div>
+                        <div class="sld-item"><div class="sld-lbl">Inner Shadow <span id="v-is">0px</span></div><input type="range" id="sl-is" min="0" max="20" value="0" oninput="setProp('innerShadow',this.value)"></div>
+                        <div class="sld-item"><div class="sld-lbl">Emboss <span id="v-em">0px</span></div><input type="range" id="sl-em" min="0" max="10" value="0" oninput="setProp('emboss',this.value)"></div>
+                        <div class="sld-item"><div class="sld-lbl">3D Depth <span id="v-3d">0px</span></div><input type="range" id="sl-3d" min="0" max="25" value="0" oninput="setProp('threeDDepth',this.value)"></div>
+                        <div class="sld-item"><div class="sld-lbl">3D Tilt <span id="v-3r">0°</span></div><input type="range" id="sl-3r" min="-45" max="45" value="0" oninput="setProp('threeDRotate',this.value)"></div>
+                        <div class="color-row"><span class="lbl-s">3D</span><input type="color" id="tdCol" value="#1e293b" class="cpk" onchange="setProp('threeDColor',this.value)"></div>
+                        <div class="sld-item"><div class="sld-lbl">3D Shadow <span id="v-3s">0px</span></div><input type="range" id="sl-3s" min="0" max="30" value="0" oninput="setProp('threeDShadow',this.value)"></div>
+                        <div class="sld-item"><div class="sld-lbl">Reflect <span id="v-rf">0%</span></div><input type="range" id="sl-rf" min="0" max="80" value="0" oninput="setProp('reflection',this.value)"></div>
+                        <div class="sld-item"><div class="sld-lbl">Glow <span id="v-gw">8px</span></div><input type="range" id="sl-gw" min="0" max="40" value="8" oninput="setProp('glow',this.value)"></div>
+                        <div class="color-row"><span class="lbl-s">Glow</span><input type="color" id="gwCol" value="#00f2fe" class="cpk" onchange="setProp('glowColor',this.value)"></div>
+                    </div>
+
+                    <div class="pan" id="tMask">
+                        <select id="modeSel" onchange="mode=this.value;canvas.style.cursor=mode!=='select'?'crosshair':'default'"><option value="select">👉 Select</option><option value="eraser">🧽 Eraser</option><option value="mask">✂️ Mask</option></select>
+                        <div class="sld-item" style="margin-top:4px"><div class="sld-lbl">Brush <span id="v-br">25px</span></div><input type="range" id="sl-br" min="5" max="100" value="25" oninput="bSz=+this.value;document.getElementById('v-br').innerText=this.value+'px'"></div>
+                        <button class="btn btn-t" onclick="restMask()">🔄 Restore</button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
