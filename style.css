@@ -1,9 +1,7 @@
-/* ============================================
-   ARJONA +AI STUDIO — MOBILE LIGHTROOM STYLE
-   ============================================ */
-
+/* ARJONA +AI — COMPLETE FIXED CSS WITH SMOOTH TRANSITIONS */
 :root {
-    --r: 12px
+    --r: 12px;
+    --trans: all .28s cubic-bezier(.4,0,.2,1)
 }
 
 [data-theme="dark"] {
@@ -33,7 +31,7 @@
     --btn-ghost-hov: rgba(0, 242, 254, .08);
     --card-shd: 0 2px 8px rgba(0, 0, 0, .3);
     --modal-bg: rgba(0, 0, 0, .7);
-    --sheet-bg: rgba(10, 18, 37, .98);
+    --sheet-bg: rgba(10, 18, 37, .98)
 }
 
 [data-theme="light"] {
@@ -63,7 +61,7 @@
     --btn-ghost-hov: rgba(0, 102, 255, .06);
     --card-shd: 0 1px 4px rgba(0, 0, 0, .06);
     --modal-bg: rgba(0, 0, 0, .4);
-    --sheet-bg: rgba(255, 255, 255, .98);
+    --sheet-bg: rgba(255, 255, 255, .98)
 }
 
 *,
@@ -92,11 +90,12 @@ body {
     width: 100%;
     height: 100%;
     z-index: -1;
-    pointer-events: none
+    pointer-events: none;
+    display: none
 }
 
 [data-theme="light"] #bgCanvas {
-    opacity: .04
+    opacity: .06
 }
 
 .ai-tag {
@@ -119,26 +118,27 @@ body {
     border-radius: var(--r);
     font-weight: 700;
     cursor: pointer;
-    transition: transform .15s, box-shadow .15s, filter .15s;
-    min-height: 40px;
-    padding: 8px 14px;
-    font-size: 12px;
+    transition: var(--trans);
+    min-height: 36px;
+    padding: 6px 12px;
+    font-size: 11px;
     white-space: nowrap
 }
 
 .btn:hover {
     transform: translateY(-1px);
-    filter: brightness(1.06)
+    filter: brightness(1.08)
 }
 
 .btn:active {
-    transform: translateY(0)
+    transform: translateY(0) scale(.97);
+    filter: brightness(.96)
 }
 
 .btn-primary {
     background: linear-gradient(135deg, var(--btn-pri-from), var(--btn-pri-to));
     color: #fff;
-    box-shadow: 0 3px 12px var(--glo);
+    box-shadow: 0 3px 10px var(--glo);
     position: relative;
     overflow: hidden
 }
@@ -167,9 +167,9 @@ body {
 }
 
 .btn-sm {
-    min-height: 32px;
-    padding: 4px 10px;
-    font-size: 11px;
+    min-height: 30px;
+    padding: 3px 8px;
+    font-size: 10px;
     border-radius: 8px
 }
 
@@ -179,71 +179,75 @@ body {
     top: 0;
     width: 20px;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .2), transparent);
+    background: linear-gradient(90deg, transparent,
+            rgba(255, 255, 255, .2), transparent);
     animation: sh 2.5s infinite
 }
 
 @keyframes sh {
-    to {
-        left: calc(100% + 20px)
-    }
+    to { left: calc(100% + 20px) }
 }
 
-/* ===== THEME TOGGLE ===== */
 .theme-toggle {
-    min-height: 32px;
-    padding: 4px 10px;
+    min-height: 30px;
+    padding: 3px 8px;
     background: var(--btn-ghost-bg);
     border: 1px solid var(--btn-ghost-bd);
-    border-radius: 16px;
+    border-radius: 14px;
     cursor: pointer;
     color: var(--tx2);
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
-    transition: all .2s
+    transition: var(--trans)
 }
 
 .theme-toggle:hover {
-    border-color: var(--ac)
+    border-color: var(--ac);
+    color: var(--ac)
 }
 
 /* ===== HEADER ===== */
 .topbar {
-    height: 42px;
+    height: 40px;
     background: var(--hdr);
     backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--bd);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 8px;
+    padding: 0 6px;
     z-index: 100;
     flex-shrink: 0;
-    gap: 4px
+    gap: 3px
 }
 
 .tb-l {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     flex-shrink: 0
 }
 
 .logo {
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
     background: linear-gradient(135deg, var(--ac), var(--ac2));
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 900;
-    color: #fff
+    color: #fff;
+    transition: var(--trans)
+}
+
+.logo:hover {
+    transform: rotate(-8deg) scale(1.1)
 }
 
 .brand {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 800;
     color: var(--tx);
     white-space: nowrap
@@ -266,7 +270,12 @@ body {
     border-radius: 6px;
     font-size: 9px;
     outline: none;
-    min-height: 32px
+    min-height: 28px;
+    transition: var(--trans)
+}
+
+.tb-sel:focus {
+    border-color: var(--ac)
 }
 
 .tb-r {
@@ -276,29 +285,34 @@ body {
     flex-shrink: 0
 }
 
-/* ===== HAMBURGER ===== */
 .mob-menu-btn {
     display: none;
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     border: 1px solid var(--bd);
     background: var(--btn-ghost-bg);
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
-    flex-shrink: 0
+    gap: 3px;
+    flex-shrink: 0;
+    transition: var(--trans)
+}
+
+.mob-menu-btn:hover {
+    border-color: var(--ac);
+    background: var(--hov)
 }
 
 .mob-menu-btn span {
     display: block;
-    width: 18px;
+    width: 14px;
     height: 2px;
     background: var(--tx);
-    border-radius: 2px;
-    transition: all .2s
+    border-radius: 1px;
+    transition: var(--trans)
 }
 
 /* ===== MOBILE SLIDE MENU ===== */
@@ -307,28 +321,31 @@ body {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, .5);
-    z-index: 998
+    z-index: 998;
+    opacity: 0;
+    transition: opacity .28s ease
 }
 
 .mob-menu-overlay.open {
-    display: block
+    display: block;
+    opacity: 1
 }
 
 .mob-menu-drawer {
     position: fixed;
     top: 0;
-    right: -280px;
-    width: 260px;
+    right: -260px;
+    width: 240px;
     height: 100%;
     background: var(--sf);
     z-index: 999;
-    transition: right .3s;
+    transition: right .3s cubic-bezier(.4,0,.2,1);
     overflow-y: auto;
-    padding: 12px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 2px;
-    box-shadow: -4px 0 20px rgba(0, 0, 0, .3)
+    box-shadow: -4px 0 24px rgba(0, 0, 0, .3)
 }
 
 .mob-menu-drawer.open {
@@ -336,12 +353,12 @@ body {
 }
 
 .mob-menu-head {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
     color: var(--tx3);
     text-transform: uppercase;
-    letter-spacing: .5px;
-    padding: 8px 4px 4px
+    padding: 6px 4px 3px;
+    letter-spacing: .5px
 }
 
 .mob-menu-item {
@@ -350,86 +367,215 @@ body {
     background: var(--btn-ghost-bg);
     border: 1px solid var(--bd);
     color: var(--tx);
-    padding: 10px 12px;
-    border-radius: 8px;
-    font-size: 12px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 11px;
     font-weight: 600;
     cursor: pointer;
-    min-height: 44px
+    min-height: 38px;
+    transition: var(--trans)
 }
 
 .mob-menu-item:hover {
     background: var(--hov);
     border-color: var(--ac);
-    color: var(--ac)
+    color: var(--ac);
+    transform: translateX(-3px)
 }
 
-/* ===== MOBILE AI TOP BAR ===== */
-.mob-ai-bar {
+/* ===== MOBILE TOP BAR ===== */
+.mob-top-bar {
     display: none;
-    padding: 6px 8px;
     background: var(--hdr);
     border-bottom: 1px solid var(--bd);
     flex-shrink: 0;
-    z-index: 50
+    z-index: 50;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    transition: max-height .3s cubic-bezier(.4,0,.2,1)
 }
 
-.mob-ai-inner {
+.mob-top-inner {
     display: flex;
-    gap: 4px;
-    align-items: center
+    gap: 3px;
+    align-items: center;
+    padding: 5px 6px;
+    flex-wrap: wrap
 }
 
 .mob-ai-input {
     flex: 1;
-    min-height: 38px;
+    min-height: 34px;
+    min-width: 100px;
     background: var(--inp);
     border: 1px solid var(--bd);
     color: var(--tx);
-    padding: 6px 10px;
-    border-radius: 8px;
-    font-size: 12px;
-    outline: none
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    outline: none;
+    transition: var(--trans)
 }
 
 .mob-ai-input:focus {
-    border-color: var(--ac)
+    border-color: var(--ac);
+    box-shadow: 0 0 0 2px var(--glo)
 }
 
 .mob-ai-select {
-    width: 70px;
-    min-height: 38px;
+    width: 60px;
+    min-height: 34px;
     background: var(--inp);
     border: 1px solid var(--bd);
     color: var(--tx);
-    border-radius: 8px;
-    font-size: 10px;
-    padding: 0 4px
+    border-radius: 6px;
+    font-size: 9px;
+    padding: 0 3px;
+    transition: var(--trans)
 }
 
-.mob-ai-gen {
-    min-height: 38px;
-    white-space: nowrap
+.mob-gen-btn {
+    min-height: 34px
 }
 
-/* ===== AI CHAT ===== */
+.mob-upload-btn {
+    min-height: 34px;
+    text-align: center;
+    cursor: pointer
+}
+
+.mob-canvas-size-row {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 3px 6px 5px;
+    overflow-x: auto
+}
+
+.mob-cs-label {
+    font-size: 9px;
+    color: var(--tx3);
+    font-weight: 600;
+    flex-shrink: 0
+}
+
+.mob-cs-btn {
+    min-height: 26px;
+    padding: 2px 8px;
+    background: var(--btn-ghost-bg);
+    border: 1px solid var(--btn-ghost-bd);
+    color: var(--tx2);
+    border-radius: 12px;
+    font-size: 9px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: var(--trans)
+}
+
+.mob-cs-btn.active {
+    background: var(--hov);
+    border-color: var(--ac);
+    color: var(--ac)
+}
+
+.mob-cs-btn:hover {
+    border-color: var(--ac);
+    color: var(--ac)
+}
+
+.mob-cs-divider {
+    width: 1px;
+    height: 18px;
+    background: var(--bd2);
+    flex-shrink: 0;
+    margin: 0 2px
+}
+
+.mob-cs-ud {
+    min-height: 26px;
+    min-width: 30px;
+    padding: 2px 6px;
+    background: var(--btn-ghost-bg);
+    border: 1px solid var(--btn-ghost-bd);
+    color: var(--tx2);
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: var(--trans)
+}
+
+.mob-cs-ud:hover,
+.mob-cs-ud:active {
+    border-color: var(--ac);
+    color: var(--ac);
+    background: var(--hov);
+    transform: scale(1.1)
+}
+
+/* ===== MOBILE RESIZE HANDLES ===== */
+.mob-resize-handle {
+    display: flex;
+    justify-content: center;
+    padding: 3px 0;
+    cursor: ns-resize;
+    flex-shrink: 0;
+    touch-action: none
+}
+
+.mob-resize-pill {
+    width: 32px;
+    height: 4px;
+    background: var(--tx3);
+    border-radius: 2px;
+    opacity: .4;
+    transition: var(--trans)
+}
+
+.mob-resize-handle:hover .mob-resize-pill {
+    opacity: .8;
+    background: var(--ac);
+    width: 44px
+}
+
+.mob-resize-top {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 5
+}
+
+.mob-resize-bottom {
+    position: relative
+}
+
+/* ===== AI CHAT BOX ===== */
 .ai-chat-box {
     position: fixed;
-    bottom: 64px;
-    right: 12px;
-    width: 300px;
-    max-width: calc(100vw - 24px);
-    max-height: 400px;
+    bottom: 60px;
+    right: 10px;
+    width: 280px;
+    max-width: calc(100vw - 20px);
+    max-height: 380px;
     background: var(--sf);
     border: 1px solid var(--bd2);
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, .25);
+    border-radius: 14px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, .25);
     z-index: 99999;
     display: flex;
     flex-direction: column;
     overflow: hidden;
     backdrop-filter: blur(12px);
-    transition: transform .25s, opacity .25s
+    transition: transform .28s cubic-bezier(.4,0,.2,1),
+                opacity .28s cubic-bezier(.4,0,.2,1)
 }
 
 .ai-chat-box.hidden {
@@ -438,20 +584,35 @@ body {
     pointer-events: none
 }
 
+/* ===== AI NEBULA CANVAS ===== */
+.ai-nebula-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    border-radius: 14px;
+    opacity: 0.45
+}
+
 .ai-chat-head {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 8px 12px;
-    background: linear-gradient(135deg, var(--btn-pri-from), var(--btn-pri-to));
+    gap: 5px;
+    padding: 7px 10px;
+    background: linear-gradient(135deg,
+            var(--btn-pri-from), var(--btn-pri-to));
     color: #fff;
-    font-size: 12px;
-    font-weight: 800
+    font-size: 11px;
+    font-weight: 800;
+    position: relative;
+    z-index: 1
 }
 
 .ai-mood-dot {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     background: #22c55e;
     border-radius: 50%;
     flex-shrink: 0;
@@ -466,21 +627,29 @@ body {
     background: none;
     border: none;
     color: rgba(255, 255, 255, .7);
-    font-size: 16px;
+    font-size: 15px;
     cursor: pointer;
-    padding: 0 4px;
-    min-height: 28px
+    padding: 0 3px;
+    min-height: 24px;
+    transition: var(--trans)
+}
+
+.ai-chat-close:hover {
+    color: #fff;
+    transform: scale(1.2)
 }
 
 .ai-chat-body {
     flex: 1;
     overflow-y: auto;
-    padding: 8px;
+    padding: 6px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    max-height: 240px;
-    min-height: 60px
+    gap: 4px;
+    max-height: 200px;
+    min-height: 50px;
+    position: relative;
+    z-index: 1
 }
 
 .ai-chat-body::-webkit-scrollbar {
@@ -493,41 +662,58 @@ body {
 }
 
 .ai-msg {
-    padding: 6px 10px;
-    border-radius: 10px;
-    font-size: 11px;
+    padding: 5px 8px;
+    border-radius: 8px;
+    font-size: 10px;
     line-height: 1.4;
     max-width: 85%;
-    word-wrap: break-word
+    word-wrap: break-word;
+    animation: msgIn .2s cubic-bezier(.4,0,.2,1)
+}
+
+@keyframes msgIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px) scale(.97)
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1)
+    }
 }
 
 .ai-msg-bot {
     background: var(--inp);
     color: var(--tx);
     align-self: flex-start;
-    border-bottom-left-radius: 4px
+    border-bottom-left-radius: 3px
 }
 
 .ai-msg-user {
-    background: linear-gradient(135deg, var(--btn-pri-from), var(--btn-pri-to));
+    background: linear-gradient(135deg,
+            var(--btn-pri-from), var(--btn-pri-to));
     color: #fff;
     align-self: flex-end;
-    border-bottom-right-radius: 4px
+    border-bottom-right-radius: 3px
 }
 
 .ai-typing {
-    padding: 4px 12px;
-    font-size: 10px;
+    padding: 3px 10px;
+    font-size: 9px;
     color: var(--tx3);
-    font-style: italic
+    font-style: italic;
+    position: relative;
+    z-index: 1
 }
 
 .ai-chat-input {
     display: flex;
     gap: 3px;
-    padding: 6px 8px;
+    padding: 5px 6px;
     border-top: 1px solid var(--bd);
-    background: var(--sf2)
+    background: var(--sf2);
+    position: relative;
+    z-index: 1
 }
 
 .ai-chat-input input {
@@ -535,70 +721,81 @@ body {
     background: var(--inp);
     border: 1px solid var(--bd);
     color: var(--tx);
-    padding: 6px 8px;
-    border-radius: 8px;
-    font-size: 11px;
+    padding: 5px 7px;
+    border-radius: 7px;
+    font-size: 10px;
     outline: none;
-    min-height: 38px
+    min-height: 34px;
+    transition: var(--trans)
 }
 
 .ai-chat-input input:focus {
-    border-color: var(--ac)
+    border-color: var(--ac);
+    box-shadow: 0 0 0 2px var(--glo)
 }
 
 .ai-chat-input button {
     background: var(--btn-ghost-bg);
     border: 1px solid var(--btn-ghost-bd);
     color: var(--tx2);
-    border-radius: 8px;
-    padding: 4px 8px;
+    border-radius: 7px;
+    padding: 3px 7px;
     cursor: pointer;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
-    min-height: 38px;
-    min-width: 38px
+    min-height: 34px;
+    min-width: 34px;
+    transition: var(--trans)
 }
 
 .ai-chat-input button:hover {
     background: var(--btn-ghost-hov);
-    color: var(--ac)
+    color: var(--ac);
+    border-color: var(--ac)
 }
 
 .ai-chat-toggle {
     position: fixed;
-    bottom: 14px;
-    right: 14px;
-    width: 46px;
-    height: 46px;
+    bottom: 12px;
+    right: 12px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--btn-pri-from), var(--btn-pri-to));
+    background: linear-gradient(135deg,
+            var(--btn-pri-from), var(--btn-pri-to));
     color: #fff;
     border: none;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 800;
     cursor: pointer;
     z-index: 99998;
-    box-shadow: 0 4px 16px var(--glo);
-    transition: transform .2s;
+    box-shadow: 0 3px 14px var(--glo);
     display: flex;
     align-items: center;
-    justify-content: center
+    justify-content: center;
+    transition: var(--trans)
 }
 
 .ai-chat-toggle:hover {
-    transform: scale(1.1)
+    transform: scale(1.12);
+    box-shadow: 0 6px 20px var(--glo)
+}
+
+.ai-chat-toggle:active {
+    transform: scale(.94)
 }
 
 /* ===== CORNER HANDLES ===== */
 .corner-handle {
     position: fixed;
-    width: 12px;
-    height: 12px;
+    width: 11px;
+    height: 11px;
     background: var(--ac);
     border: 2px solid var(--sf);
     border-radius: 2px;
     z-index: 99997;
-    box-shadow: 0 0 4px rgba(0, 0, 0, .3)
+    box-shadow: 0 0 4px rgba(0, 0, 0, .3);
+    transition: transform .15s ease, background .15s ease
 }
 
 .corner-handle::before {
@@ -608,85 +805,19 @@ body {
 }
 
 .corner-handle:hover {
-    transform: scale(1.4);
+    transform: scale(1.5);
     background: #fff
 }
 
-.corner-handle.nw {
-    cursor: nwse-resize
-}
+.corner-handle.nw { cursor: nwse-resize }
+.corner-handle.ne { cursor: nesw-resize }
+.corner-handle.sw { cursor: nesw-resize }
+.corner-handle.se { cursor: nwse-resize }
 
-.corner-handle.ne {
-    cursor: nesw-resize
-}
-
-.corner-handle.sw {
-    cursor: nesw-resize
-}
-
-.corner-handle.se {
-    cursor: nwse-resize
-}
-
-/* ===== DELETE FLOAT ===== */
-.del-float {
-    position: fixed;
-    z-index: 99999;
-    bottom: 70px;
-    right: 70px;
-    background: rgba(239, 68, 68, .92);
-    color: #fff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 800;
-    cursor: pointer;
-    box-shadow: 0 4px 16px rgba(239, 68, 68, .3);
-    min-height: 40px
-}
-
-.del-float:hover {
-    transform: scale(1.05)
-}
-
-/* ===== SEL BAR ===== */
-.sel-bar {
-    position: fixed;
-    z-index: 99999;
-    display: flex;
-    gap: 2px;
-    padding: 3px 5px;
-    background: var(--sf);
-    border: 1px solid var(--bd2);
-    border-radius: 12px;
-    box-shadow: var(--card-shd);
-    backdrop-filter: blur(6px)
-}
-
-.sel-bar button {
-    background: transparent;
-    border: none;
-    color: var(--tx2);
-    padding: 3px 6px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 11px;
-    font-weight: 600;
-    min-height: 28px;
-    transition: all .1s
-}
-
-.sel-bar button:hover {
-    background: var(--hov);
-    color: var(--ac)
-}
-
-.sel-sep {
-    width: 1px;
-    background: var(--bd);
-    margin: 2px 1px
-}
+/* ===== SEL BAR — always hidden ===== */
+.sel-bar { display: none !important }
+.sel-sep { width: 1px; background: var(--bd); margin: 2px 1px }
+.del-float { display: none }
 
 /* ===== MODAL ===== */
 .modal-overlay {
@@ -698,27 +829,45 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 16px
+    padding: 16px;
+    animation: fadeIn .22s ease
+}
+
+@keyframes fadeIn {
+    from { opacity: 0 }
+    to { opacity: 1 }
 }
 
 .modal-box {
     background: var(--sf);
     border: 1px solid var(--bd2);
-    border-radius: 16px;
+    border-radius: 14px;
     width: 100%;
-    max-width: 480px;
+    max-width: 440px;
     max-height: 80vh;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, .25);
-    overflow: hidden
+    box-shadow: 0 12px 36px rgba(0, 0, 0, .25);
+    overflow: hidden;
+    animation: slideUp .25s cubic-bezier(.4,0,.2,1)
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(.97)
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1)
+    }
 }
 
 .modal-head {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 16px;
+    padding: 10px 14px;
     border-bottom: 1px solid var(--bd)
 }
 
@@ -728,26 +877,29 @@ body {
 }
 
 .modal-x {
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     border: 1px solid var(--bd);
     background: var(--btn-ghost-bg);
     color: var(--tx2);
     cursor: pointer;
-    font-size: 13px;
+    font-size: 12px;
     display: flex;
     align-items: center;
-    justify-content: center
+    justify-content: center;
+    transition: var(--trans)
 }
 
 .modal-x:hover {
-    background: rgba(239, 68, 68, .1);
-    color: var(--dn)
+    background: var(--dn-bg);
+    border-color: var(--dn);
+    color: var(--dn);
+    transform: rotate(90deg)
 }
 
 .modal-body {
-    padding: 12px 16px;
+    padding: 10px 14px;
     overflow-y: auto;
     flex: 1
 }
@@ -756,28 +908,35 @@ body {
     background: var(--inp);
     border: 1px solid var(--bd);
     border-radius: var(--r);
-    padding: 10px;
-    margin-bottom: 6px
+    padding: 8px;
+    margin-bottom: 5px;
+    transition: var(--trans)
+}
+
+.help-card:hover {
+    border-color: var(--ac);
+    background: var(--hov)
 }
 
 .help-card h3 {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
     color: var(--ac);
-    margin-bottom: 3px
+    margin-bottom: 2px
 }
 
 .help-card p {
-    font-size: 10px;
+    font-size: 9px;
     color: var(--tx2);
     line-height: 1.5
 }
 
-/* ===== RESIZE HANDLES ===== */
+/* ===== RESIZE HANDLES DESKTOP ===== */
 .resize-handle {
     flex-shrink: 0;
     z-index: 25;
-    position: relative
+    position: relative;
+    transition: background .2s ease
 }
 
 .resize-h {
@@ -786,9 +945,7 @@ body {
     background: var(--bd)
 }
 
-.resize-h:hover {
-    background: var(--ac) !important
-}
+.resize-h:hover { background: var(--ac) !important }
 
 .resize-h::before {
     content: '';
@@ -807,11 +964,9 @@ body {
     background: var(--bd)
 }
 
-.resize-v:hover {
-    background: var(--ac) !important
-}
+.resize-v:hover { background: var(--ac) !important }
 
-/* ===== MIDDLE ===== */
+/* ===== LAYOUT ===== */
 .middle {
     display: flex;
     flex: 1;
@@ -819,41 +974,58 @@ body {
     min-height: 0
 }
 
-/* ===== LEFT SIDEBAR (desktop) ===== */
+/* ===== LEFT SIDEBAR ===== */
 .left-sb {
-    width: 230px;
+    width: 220px;
     min-width: 120px;
     max-width: 400px;
     display: flex;
-    flex-shrink: 0
+    flex-shrink: 0;
+    transition: width .25s cubic-bezier(.4,0,.2,1)
 }
 
+/* ===== AI BOX ===== */
 .ai-box {
     flex: 1;
     background: var(--pnl);
     overflow-y: auto;
-    padding: 8px;
+    overflow-x: hidden;
+    padding: 6px;
     display: flex;
     flex-direction: column;
-    gap: 5px
+    gap: 4px;
+    position: relative
 }
 
-.ai-box::-webkit-scrollbar {
-    width: 3px
-}
-
+.ai-box::-webkit-scrollbar { width: 3px }
 .ai-box::-webkit-scrollbar-thumb {
     background: var(--ac);
     border-radius: 3px
 }
 
+/* ===== AI BOX NEBULA ===== */
+.ai-box-nebula {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.18
+}
+
+.ai-box > * {
+    position: relative;
+    z-index: 1
+}
+
 .ai-title {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 800;
     color: var(--ac);
     text-transform: uppercase;
     letter-spacing: .4px;
-    margin-bottom: 2px
+    margin-bottom: 1px
 }
 
 .ai-pw {
@@ -863,46 +1035,46 @@ body {
 
 .mic-btn {
     position: absolute;
-    right: 4px;
-    bottom: 4px;
-    width: 32px;
-    height: 32px;
+    right: 3px;
+    bottom: 3px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     border: 1px solid var(--bd);
     background: var(--sf);
     cursor: pointer;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 32px
+    min-height: 28px;
+    transition: var(--trans)
 }
 
 .mic-btn:hover {
-    border-color: var(--ac)
+    border-color: var(--ac);
+    color: var(--ac);
+    background: var(--hov)
 }
 
 .ai-opts {
     display: flex;
-    gap: 3px;
-    margin-bottom: 3px;
+    gap: 2px;
+    margin-bottom: 2px;
     flex-wrap: wrap
 }
 
-.ai-opts select {
-    flex: 1;
-    min-width: 70px
-}
+.ai-opts select { flex: 1; min-width: 60px }
 
 .ai-section {
     border-top: 1px solid var(--bd);
-    padding-top: 5px;
-    margin-top: 3px
+    padding-top: 4px;
+    margin-top: 2px
 }
 
 .ai-sub {
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 700;
     color: var(--tx2);
     text-transform: uppercase;
@@ -919,10 +1091,10 @@ body {
 .log-bar {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 3px;
     background: var(--inp);
-    padding: 3px 6px;
-    border-radius: 6px;
+    padding: 3px 5px;
+    border-radius: 5px;
     border-left: 2px solid var(--ac);
     margin-top: auto
 }
@@ -937,19 +1109,12 @@ body {
 }
 
 @keyframes bl {
-
-    0%,
-    100% {
-        opacity: 1
-    }
-
-    50% {
-        opacity: .2
-    }
+    0%, 100% { opacity: 1 }
+    50% { opacity: .2 }
 }
 
 .log-bar p {
-    font-size: 9px;
+    font-size: 8px;
     color: var(--ac);
     white-space: nowrap;
     overflow: hidden;
@@ -958,24 +1123,24 @@ body {
 }
 
 .dots-col {
-    width: 48px;
-    min-width: 48px;
+    width: 44px;
+    min-width: 44px;
     background: var(--sf);
     border-left: 1px solid var(--bd);
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 4px 2px;
-    gap: 3px;
+    padding: 3px 1px;
+    gap: 2px;
     overflow-y: auto
 }
 
 .dot-btn {
-    width: 40px;
-    min-height: 40px;
+    width: 38px;
+    min-height: 36px;
     background: var(--btn-ghost-bg);
     border: 1px solid var(--btn-ghost-bd);
-    border-radius: 8px;
+    border-radius: 7px;
     cursor: pointer;
     color: var(--tx2);
     display: flex;
@@ -983,30 +1148,32 @@ body {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    padding: 3px 1px;
+    padding: 2px 1px;
     gap: 1px;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 700;
-    transition: all .1s
+    transition: var(--trans)
 }
 
 .dot-btn small {
-    font-size: 7px;
+    font-size: 6px;
     font-weight: 600;
-    opacity: .6
+    opacity: .6;
+    transition: opacity .2s
 }
 
 .dot-btn:hover {
     background: var(--btn-ghost-hov);
     border-color: var(--ac);
-    color: var(--ac)
+    color: var(--ac);
+    transform: scale(1.06)
 }
 
-.dot-btn:hover small {
-    opacity: 1
-}
+.dot-btn:hover small { opacity: 1 }
 
-/* ===== CANVAS ===== */
+.dot-btn:active { transform: scale(.94) }
+
+/* ===== CANVAS AREA ===== */
 .canvas-area {
     flex: 1;
     display: flex;
@@ -1031,7 +1198,9 @@ canvas#mainCanvas {
     display: block;
     max-width: 100%;
     max-height: 100%;
-    object-fit: contain
+    object-fit: contain;
+    touch-action: none;
+    transition: max-height .3s cubic-bezier(.4,0,.2,1)
 }
 
 .ldr {
@@ -1041,21 +1210,22 @@ canvas#mainCanvas {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    gap: 4px;
     background: rgba(2, 6, 23, .95);
     z-index: 50;
-    border-radius: 8px
+    border-radius: 6px;
+    animation: fadeIn .2s ease
 }
 
 .ldr p {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--ac);
     font-weight: 700
 }
 
 .spin {
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     border: 3px solid var(--bd);
     border-top-color: var(--ac);
     border-radius: 50%;
@@ -1063,9 +1233,7 @@ canvas#mainCanvas {
 }
 
 @keyframes sp {
-    to {
-        transform: rotate(360deg)
-    }
+    to { transform: rotate(360deg) }
 }
 
 /* ===== DESKTOP BOTTOM PANEL ===== */
@@ -1074,41 +1242,40 @@ canvas#mainCanvas {
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
-    height: 175px;
+    height: 170px;
     min-height: 44px;
     max-height: 60vh;
-    overflow: hidden
+    overflow: hidden;
+    transition: height .25s cubic-bezier(.4,0,.2,1)
 }
 
 .bp-tabs {
     display: flex;
     border-bottom: 1px solid var(--bd);
-    padding: 0 4px;
+    padding: 0 3px;
     flex-shrink: 0;
     overflow-x: auto;
     gap: 0
 }
 
-.bp-tabs::-webkit-scrollbar {
-    height: 0
-}
+.bp-tabs::-webkit-scrollbar { height: 0 }
 
 .bp-tab {
     background: transparent;
     border: none;
     border-bottom: 2px solid transparent;
     color: var(--tx3);
-    padding: 5px 10px;
+    padding: 4px 8px;
     font-size: 10px;
     font-weight: 700;
     cursor: pointer;
     white-space: nowrap;
-    min-height: 34px
+    min-height: 30px;
+    transition: color .2s ease,
+                border-color .2s ease
 }
 
-.bp-tab:hover {
-    color: var(--tx2)
-}
+.bp-tab:hover { color: var(--tx2) }
 
 .bp-tab.active {
     color: var(--ac);
@@ -1118,34 +1285,38 @@ canvas#mainCanvas {
 .bp-body {
     flex: 1;
     overflow-y: auto;
-    overflow-x: auto
+    overflow-x: auto;
+    position: relative
 }
 
-.bp-body::-webkit-scrollbar {
-    width: 3px;
-    height: 3px
-}
-
+.bp-body::-webkit-scrollbar { width: 3px; height: 3px }
 .bp-body::-webkit-scrollbar-thumb {
     background: var(--ac);
     border-radius: 3px
 }
 
+/* ===== SMOOTH PANEL TRANSITIONS ===== */
 .bp-pan {
     display: none;
-    padding: 6px;
-    gap: 6px
+    padding: 5px;
+    gap: 5px;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .22s ease,
+                transform .22s cubic-bezier(.4,0,.2,1)
 }
 
 .bp-pan.active {
     display: flex;
-    flex-wrap: wrap
+    flex-wrap: wrap;
+    opacity: 1;
+    transform: translateY(0)
 }
 
 .bp-col {
-    min-width: 150px;
+    min-width: 140px;
     flex: 1;
-    padding-right: 8px;
+    padding-right: 7px;
     border-right: 1px solid var(--bd)
 }
 
@@ -1155,37 +1326,38 @@ canvas#mainCanvas {
 }
 
 .bp-h {
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: .4px;
+    letter-spacing: .3px;
     color: var(--tx2);
-    margin-bottom: 5px
+    margin-bottom: 4px
 }
 
 .grade-actions {
     display: flex;
-    gap: 4px;
-    margin-top: 6px;
+    gap: 3px;
+    margin-top: 4px;
     position: sticky;
     bottom: 0;
     background: var(--pnl);
-    padding: 3px 0
+    padding: 2px 0
 }
 
-/* ===== SHARED FORM ===== */
+/* ===== SHARED FORMS ===== */
 .inp {
     width: 100%;
     background: var(--inp);
     border: 1px solid var(--bd);
     color: var(--tx);
-    padding: 5px 7px;
-    border-radius: 6px;
-    font-size: 11px;
+    padding: 4px 6px;
+    border-radius: 5px;
+    font-size: 10px;
     outline: none;
     resize: none;
-    margin-bottom: 3px;
-    min-height: 34px
+    margin-bottom: 2px;
+    min-height: 30px;
+    transition: var(--trans)
 }
 
 .inp:focus {
@@ -1196,22 +1368,22 @@ canvas#mainCanvas {
 .sld {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
     margin-bottom: 3px;
     flex-wrap: nowrap;
     min-width: 0
 }
 
 .sld label {
-    font-size: 9px;
+    font-size: 8px;
     color: var(--tx3);
-    min-width: 34px;
+    min-width: 30px;
     font-weight: 600
 }
 
 .sld input[type="range"] {
     flex: 1;
-    min-width: 50px;
+    min-width: 40px;
     height: 4px;
     cursor: pointer;
     accent-color: var(--range-accent);
@@ -1219,23 +1391,29 @@ canvas#mainCanvas {
     appearance: none;
     background: var(--range-track);
     border-radius: 2px;
-    outline: none
+    outline: none;
+    transition: background .2s
 }
 
 .sld input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     background: var(--range-accent);
     border-radius: 50%;
     border: 2px solid var(--sf);
     box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
-    cursor: pointer
+    cursor: pointer;
+    transition: transform .15s ease
+}
+
+.sld input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2)
 }
 
 .sld input[type="range"]::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     background: var(--range-accent);
     border-radius: 50%;
     border: 2px solid var(--sf);
@@ -1243,50 +1421,54 @@ canvas#mainCanvas {
 }
 
 .sld span {
-    font-size: 9px;
+    font-size: 8px;
     color: var(--tx2);
-    min-width: 26px;
+    min-width: 24px;
     text-align: right;
-    font-weight: 600
+    font-weight: 600;
+    transition: color .2s
 }
 
 .cr {
     display: flex;
     align-items: center;
-    gap: 5px;
-    margin-bottom: 3px;
+    gap: 4px;
+    margin-bottom: 2px;
     flex-wrap: wrap
 }
 
 .cr label {
-    font-size: 9px;
+    font-size: 8px;
     color: var(--tx3);
-    min-width: 30px;
+    min-width: 26px;
     font-weight: 600
 }
 
 .cr input[type="color"] {
-    width: 26px;
-    height: 20px;
+    width: 24px;
+    height: 18px;
     border: 1px solid var(--bd);
     border-radius: 4px;
     padding: 0;
     cursor: pointer;
-    background: transparent
+    background: transparent;
+    transition: var(--trans)
 }
 
 .cr input[type="color"]:hover {
-    border-color: var(--ac)
+    border-color: var(--ac);
+    transform: scale(1.1)
 }
 
 .upz {
     position: relative;
     width: 100%;
-    min-height: 36px;
+    min-height: 32px;
     border: 1px dashed var(--bd2);
-    border-radius: 8px;
+    border-radius: 6px;
     overflow: hidden;
-    margin-bottom: 3px
+    margin-bottom: 2px;
+    transition: var(--trans)
 }
 
 .upz input[type="file"] {
@@ -1303,11 +1485,11 @@ canvas#mainCanvas {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 600;
     color: var(--tx2);
     pointer-events: none;
-    min-height: 36px
+    min-height: 32px
 }
 
 .upz:hover {
@@ -1315,28 +1497,20 @@ canvas#mainCanvas {
     background: var(--hov)
 }
 
-.upz.sm {
-    min-height: 30px
-}
-
-.upz.sm span {
-    font-size: 9px;
-    min-height: 30px
-}
+.upz.sm { min-height: 26px }
+.upz.sm span { font-size: 8px; min-height: 26px }
 
 .sel-info {
-    font-size: 10px;
+    font-size: 9px;
     color: var(--tx3);
-    margin: 3px 0
+    margin: 2px 0
 }
 
-.sel-info b {
-    color: var(--ac)
-}
+.sel-info b { color: var(--ac) }
 
 .act-row {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 2px;
     margin-bottom: 2px
 }
@@ -1345,31 +1519,35 @@ canvas#mainCanvas {
     background: var(--btn-ghost-bg);
     border: 1px solid var(--btn-ghost-bd);
     color: var(--tx2);
-    padding: 4px;
-    border-radius: 6px;
+    padding: 3px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 600;
-    min-height: 34px
+    min-height: 30px;
+    transition: var(--trans)
 }
 
 .act-row button:hover {
     background: var(--btn-ghost-hov);
     border-color: var(--ac);
-    color: var(--ac)
+    color: var(--ac);
+    transform: translateY(-1px)
 }
 
-.act-d {
-    color: var(--dn) !important
+.act-row button:active {
+    transform: translateY(0)
 }
+
+.act-d { color: var(--dn) !important }
 
 .bg-tabs {
     display: flex;
     background: var(--inp);
-    border-radius: 6px;
-    padding: 2px;
+    border-radius: 5px;
+    padding: 1px;
     gap: 1px;
-    margin-bottom: 3px
+    margin-bottom: 2px
 }
 
 .bgt {
@@ -1377,17 +1555,16 @@ canvas#mainCanvas {
     background: transparent;
     border: none;
     color: var(--tx3);
-    font-size: 9px;
-    padding: 3px;
+    font-size: 8px;
+    padding: 2px;
     border-radius: 4px;
     font-weight: 700;
     cursor: pointer;
-    min-height: 26px
+    min-height: 22px;
+    transition: var(--trans)
 }
 
-.bgt:hover {
-    color: var(--tx2)
-}
+.bgt:hover { color: var(--tx2) }
 
 .bgt.active {
     background: var(--sf);
@@ -1395,83 +1572,94 @@ canvas#mainCanvas {
     border: 1px solid var(--bd2)
 }
 
+/* ===== SMOOTH BG PANEL TRANSITIONS ===== */
 .bgp {
-    display: none
+    display: none;
+    opacity: 0;
+    transform: translateX(6px);
+    transition: opacity .2s ease, transform .2s ease
 }
 
 .bgp.active {
-    display: block
+    display: block;
+    opacity: 1;
+    transform: translateX(0)
 }
 
 .pat-row {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 2px;
-    margin-bottom: 3px
+    margin-bottom: 2px
 }
 
 .pat-row button {
-    min-height: 30px;
+    min-height: 26px;
     background: var(--btn-ghost-bg);
     border: 1px solid var(--btn-ghost-bd);
     border-radius: 4px;
     cursor: pointer;
-    font-size: 10px;
+    font-size: 9px;
     color: var(--tx2);
     font-weight: 600;
     display: flex;
     align-items: center;
-    justify-content: center
+    justify-content: center;
+    transition: var(--trans)
 }
 
 .pat-row button:hover {
     border-color: var(--ac);
-    color: var(--ac)
+    color: var(--ac);
+    transform: scale(1.05)
 }
 
 .sw-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 3px;
-    margin-bottom: 3px
+    margin-bottom: 2px
 }
 
 .sw {
     aspect-ratio: 1;
     border: 2px solid var(--bd);
-    border-radius: 6px;
+    border-radius: 5px;
     cursor: pointer;
-    min-height: 24px;
-    transition: all .1s
+    min-height: 22px;
+    transition: var(--trans)
 }
 
 .sw:hover {
     border-color: var(--ac);
-    transform: scale(1.05)
+    transform: scale(1.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,.3)
 }
 
 .fx-row {
     display: flex;
     align-items: center;
     gap: 3px;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
     flex-wrap: nowrap;
     min-width: 0
 }
 
 .fx-row input[type="color"] {
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     border: 1px solid var(--bd);
-    border-radius: 5px;
+    border-radius: 4px;
     padding: 0;
     cursor: pointer;
     background: transparent;
-    flex-shrink: 0
+    flex-shrink: 0;
+    transition: var(--trans)
 }
 
 .fx-row input[type="color"]:hover {
-    border-color: var(--ac)
+    border-color: var(--ac);
+    transform: scale(1.1)
 }
 
 .fx-row .sld {
@@ -1483,23 +1671,24 @@ canvas#mainCanvas {
 .mode-row {
     display: flex;
     gap: 2px;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
     flex-wrap: wrap
 }
 
 .mode-btn {
     flex: 1;
-    min-width: 44px;
-    min-height: 36px;
+    min-width: 40px;
+    min-height: 32px;
     background: var(--btn-ghost-bg);
     border: 1px solid var(--btn-ghost-bd);
-    padding: 4px;
-    border-radius: 8px;
+    padding: 3px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 600;
     color: var(--tx2);
-    text-align: center
+    text-align: center;
+    transition: var(--trans)
 }
 
 .mode-btn.active {
@@ -1509,7 +1698,8 @@ canvas#mainCanvas {
 }
 
 .mode-btn:hover {
-    border-color: var(--ac)
+    border-color: var(--ac);
+    transform: translateY(-1px)
 }
 
 .gp-grid {
@@ -1522,19 +1712,21 @@ canvas#mainCanvas {
     background: var(--btn-ghost-bg);
     border: 1px solid var(--btn-ghost-bd);
     color: var(--tx2);
-    padding: 4px;
-    border-radius: 6px;
+    padding: 3px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 600;
-    min-height: 32px;
-    text-align: center
+    min-height: 28px;
+    text-align: center;
+    transition: var(--trans)
 }
 
 .gp:hover {
     border-color: var(--ac);
     color: var(--ac);
-    background: var(--hov)
+    background: var(--hov);
+    transform: translateY(-1px)
 }
 
 .px-grid {
@@ -1547,40 +1739,40 @@ canvas#mainCanvas {
     background: var(--btn-ghost-bg);
     border: 1px solid var(--btn-ghost-bd);
     color: var(--tx2);
-    padding: 4px;
-    border-radius: 6px;
+    padding: 3px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 600;
-    min-height: 30px;
-    text-align: center
+    min-height: 26px;
+    text-align: center;
+    transition: var(--trans)
 }
 
 .px-btn:hover {
     border-color: var(--ac);
     color: var(--ac);
-    background: var(--hov)
+    background: var(--hov);
+    transform: scale(1.04)
 }
 
-/* ===== STATUS ===== */
+/* ===== STATUS BAR ===== */
 .statusbar {
-    height: 20px;
+    height: 18px;
     background: var(--hdr);
     border-top: 1px solid var(--bd);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 8px;
+    padding: 0 6px;
     flex-shrink: 0;
     z-index: 20
 }
 
-.st-l,
-.st-c,
-.st-r {
+.st-l, .st-c, .st-r {
     display: flex;
     align-items: center;
-    gap: 4px
+    gap: 3px
 }
 
 .st-dot {
@@ -1592,42 +1784,47 @@ canvas#mainCanvas {
 }
 
 .st-log {
-    font-size: 9px;
+    font-size: 8px;
     color: var(--ac);
-    max-width: 120px;
+    max-width: 100px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis
 }
 
-.st-c span {
-    font-size: 9px;
-    color: var(--tx3);
-    font-weight: 600
-}
+.st-c span { font-size: 8px; color: var(--tx3); font-weight: 600 }
+.st-r span { font-size: 7px; color: var(--tx3) }
 
-.st-r span {
-    font-size: 8px;
-    color: var(--tx3)
-}
-
-/* ===== MOBILE BOTTOM TOOLBAR (Lightroom style) ===== */
+/* ===== MOBILE BOTTOM BAR ===== */
 .mob-bottom-bar {
     display: none;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 48px;
     background: var(--hdr);
     border-top: 1px solid var(--bd);
     z-index: 500;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    padding: 0 4px;
+    flex-direction: column;
     backdrop-filter: blur(12px)
 }
+
+.mob-bottom-inner {
+    display: flex;
+    align-items: center;
+    height: 44px
+}
+
+.mob-bottom-scroll {
+    display: flex;
+    flex: 1;
+    overflow-x: auto;
+    gap: 0;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory
+}
+
+.mob-bottom-scroll::-webkit-scrollbar { height: 0 }
 
 .mob-bar-btn {
     background: none;
@@ -1635,15 +1832,17 @@ canvas#mainCanvas {
     color: var(--tx3);
     cursor: pointer;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1px;
-    padding: 4px;
-    min-width: 44px;
+    padding: 6px 12px;
+    min-width: 48px;
     min-height: 44px;
-    border-radius: 8px;
-    transition: all .15s
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+    scroll-snap-align: start;
+    transition: color .2s ease,
+                transform .15s ease
 }
 
 .mob-bar-btn.active {
@@ -1654,9 +1853,31 @@ canvas#mainCanvas {
     color: var(--ac)
 }
 
-.mob-bar-icon {
-    font-size: 12px;
-    font-weight: 700
+.mob-bar-btn:active {
+    transform: scale(.92)
+}
+
+.mob-del-btn {
+    background: var(--dn-bg);
+    border: none;
+    border-left: 1px solid var(--bd);
+    color: var(--dn);
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+    min-height: 44px;
+    min-width: 48px;
+    padding: 0 10px;
+    flex-shrink: 0;
+    transition: var(--trans)
+}
+
+.mob-del-btn:hover {
+    background: rgba(239, 68, 68, .2)
+}
+
+.mob-del-btn:active {
+    transform: scale(.92)
 }
 
 /* ===== MOBILE BOTTOM SHEETS ===== */
@@ -1665,23 +1886,27 @@ canvas#mainCanvas {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, .4);
-    z-index: 600
+    z-index: 600;
+    opacity: 0;
+    transition: opacity .28s ease
 }
 
 .mob-sheet-overlay.open {
-    display: block
+    display: block;
+    opacity: 1
 }
 
+/* ===== SMOOTH SHEET TRANSITIONS ===== */
 .mob-sheet {
     position: fixed;
     bottom: -100%;
     left: 0;
     right: 0;
-    max-height: 65vh;
+    max-height: 62vh;
     background: var(--sheet-bg);
-    border-radius: 16px 16px 0 0;
+    border-radius: 14px 14px 0 0;
     z-index: 700;
-    transition: bottom .3s;
+    transition: bottom .32s cubic-bezier(.4,0,.2,1);
     display: flex;
     flex-direction: column;
     box-shadow: 0 -4px 24px rgba(0, 0, 0, .3);
@@ -1689,321 +1914,270 @@ canvas#mainCanvas {
 }
 
 .mob-sheet.open {
-    bottom: 48px
+    bottom: 44px
 }
 
 .mob-sheet-handle {
     display: flex;
     justify-content: center;
-    padding: 8px 0 4px;
+    padding: 6px 0 3px;
     cursor: grab;
     flex-shrink: 0
 }
 
 .mob-sheet-bar {
-    width: 36px;
+    width: 32px;
     height: 4px;
     background: var(--tx3);
     border-radius: 2px;
-    opacity: .5
+    opacity: .4;
+    transition: var(--trans)
 }
 
+.mob-sheet-handle:hover .mob-sheet-bar {
+    opacity: .8;
+    background: var(--ac);
+    width: 44px
+}
+
+/* ===== SMOOTH SHEET BODY CONTENT ===== */
 .mob-sheet-body {
     flex: 1;
     overflow-y: auto;
-    padding: 8px 12px 16px;
-    -webkit-overflow-scrolling: touch
+    padding: 6px 10px 14px;
+    -webkit-overflow-scrolling: touch;
+    animation: sheetBodyIn .25s cubic-bezier(.4,0,.2,1)
 }
 
-.mob-sheet-body::-webkit-scrollbar {
-    width: 3px
+@keyframes sheetBodyIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px)
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0)
+    }
 }
 
+.mob-sheet-body::-webkit-scrollbar { width: 3px }
 .mob-sheet-body::-webkit-scrollbar-thumb {
     background: var(--ac);
     border-radius: 3px
 }
 
 .mob-sheet-title {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
     color: var(--tx2);
     text-transform: uppercase;
-    letter-spacing: .4px;
-    margin-bottom: 6px
+    letter-spacing: .3px;
+    margin-bottom: 5px
 }
 
 .mob-sheet-row {
     display: flex;
-    gap: 4px;
-    margin-bottom: 6px;
+    gap: 3px;
+    margin-bottom: 5px;
     flex-wrap: wrap
 }
 
-.mob-sheet-row .btn {
-    flex: 1;
-    min-width: 60px
-}
+.mob-sheet-row .btn { flex: 1; min-width: 50px }
 
 .sw-grid-mob {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 4px;
-    margin-bottom: 6px
+    gap: 3px;
+    margin-bottom: 5px
 }
 
-.sw-grid-mob .sw {
-    min-height: 32px
-}
+.sw-grid-mob .sw { min-height: 28px }
 
 .gp-grid-mob {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 3px;
-    margin-bottom: 6px
+    gap: 2px;
+    margin-bottom: 5px
 }
 
-.gp-grid-mob .gp {
-    min-height: 36px
-}
+.gp-grid-mob .gp { min-height: 32px }
 
 .px-grid-mob {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 3px
+    gap: 2px
 }
 
-.px-grid-mob .px-btn {
-    min-height: 36px
+.px-grid-mob .px-btn { min-height: 32px }
+
+/* ===== HISTORY ===== */
+.hist-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    max-height: 280px;
+    overflow-y: auto
 }
 
-/* ============================================
-   RESPONSIVE — MOBILE (<= 900px)
-   ============================================ */
+.hist-list::-webkit-scrollbar { width: 3px }
+.hist-list::-webkit-scrollbar-thumb {
+    background: var(--ac);
+    border-radius: 3px
+}
+
+.hist-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 8px;
+    background: var(--inp);
+    border: 1px solid var(--bd);
+    border-radius: 7px;
+    cursor: pointer;
+    transition: var(--trans)
+}
+
+.hist-item:hover {
+    border-color: var(--ac);
+    background: var(--hov);
+    transform: translateX(3px)
+}
+
+.hist-item.current {
+    border-color: var(--ac);
+    background: var(--hov)
+}
+
+.hist-item-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ac);
+    flex-shrink: 0
+}
+
+.hist-item-dot.old { background: var(--tx3) }
+
+.hist-item-label {
+    flex: 1;
+    font-size: 10px;
+    color: var(--tx2);
+    font-weight: 600
+}
+
+.hist-item-num {
+    font-size: 8px;
+    color: var(--tx3);
+    font-weight: 600
+}
+
+.hist-empty {
+    font-size: 10px;
+    color: var(--tx3);
+    text-align: center;
+    padding: 16px 0
+}
+
+.canvas-sel-active canvas#mainCanvas { cursor: move }
+
+/* ===== RESPONSIVE MOBILE ===== */
 @media(max-width:900px) {
-
-    /* Hide desktop elements */
-    .left-sb {
-        display: none !important
-    }
-
-    .resize-h {
-        display: none !important
-    }
-
-    .desk-only {
-        display: none !important
-    }
-
-    /* Show mobile elements */
-    .mob-menu-btn {
-        display: flex
-    }
-
-    .mob-ai-bar {
-        display: flex
-    }
-
-    .mob-bottom-bar {
-        display: flex
-    }
-
-    .tb-desk {
-        display: none
-    }
-
-    /* Canvas full screen */
-    .middle {
-        flex: 1
-    }
-
-    .canvas-area {
-        width: 100%;
-        height: 100%
-    }
+    .left-sb { display: none !important }
+    .resize-h { display: none !important }
+    .desk-only { display: none !important }
+    .mob-menu-btn { display: flex }
+    .mob-top-bar { display: flex }
+    .mob-bottom-bar { display: flex }
+    .tb-desk { display: none }
+    .middle { flex: 1 }
+    .canvas-area { width: 100%; height: 100% }
 
     canvas#mainCanvas {
-        max-height: calc(100dvh - 42px - 46px - 48px);
-        width: 100%
+        max-height: calc(100dvh - 40px - 70px - 44px);
+        width: 100%;
+        touch-action: none
     }
 
-    /* Adjust header */
-    .topbar {
-        height: 42px;
-        padding: 0 6px;
-        gap: 3px
-    }
+    .topbar { height: 40px; padding: 0 5px; gap: 2px }
+    .brand { font-size: 12px }
+    .logo { width: 22px; height: 22px; font-size: 11px }
 
-    .brand {
-        font-size: 13px
-    }
-
-    .logo {
-        width: 26px;
-        height: 26px;
-        font-size: 12px
-    }
-
-    /* Chat adjustments */
     .ai-chat-box {
         width: calc(100vw - 16px);
         right: 8px;
         left: 8px;
-        bottom: 56px;
+        bottom: 52px;
         max-height: 50vh
     }
 
     .ai-chat-toggle {
-        bottom: 56px;
+        bottom: 52px;
         right: 8px;
-        width: 42px;
-        height: 42px;
-        font-size: 12px
+        width: 38px;
+        height: 38px;
+        font-size: 11px
     }
 
-    /* Delete float */
-    .del-float {
-        bottom: 56px;
-        right: 56px;
-        font-size: 11px;
-        padding: 6px 12px;
-        min-height: 34px
+    body.sheet-open canvas#mainCanvas {
+        max-height: calc(100dvh - 40px - 70px - 44px - 52px);
+        transition: max-height .3s cubic-bezier(.4,0,.2,1)
     }
 
-    /* Sel bar */
-    .sel-bar {
-        bottom: 56px;
-        left: 8px;
-        right: auto;
-        top: auto;
-        padding: 2px 4px;
-        border-radius: 10px
-    }
-
-    .sel-bar button {
-        font-size: 10px;
-        padding: 2px 5px;
-        min-height: 26px
+    body.sheet-open .cv-frame {
+        transition: padding-bottom .3s cubic-bezier(.4,0,.2,1)
     }
 }
 
-/* ===== VERY SMALL PHONE ===== */
 @media(max-width:400px) {
-    .topbar {
-        height: 38px
-    }
-
-    .logo {
-        width: 24px;
-        height: 24px;
-        font-size: 11px
-    }
-
-    .brand {
-        font-size: 12px
-    }
-
-    .mob-ai-bar {
-        padding: 4px 6px
-    }
-
-    .mob-ai-input {
-        font-size: 11px;
-        min-height: 34px
-    }
-
-    .mob-ai-gen {
-        font-size: 10px;
-        min-height: 34px
-    }
-
-    .mob-bottom-bar {
-        height: 44px
-    }
-
-    .mob-bar-icon {
-        font-size: 11px
-    }
+    .topbar { height: 36px }
+    .logo { width: 20px; height: 20px; font-size: 10px }
+    .brand { font-size: 11px }
+    .mob-top-bar .mob-ai-input { font-size: 10px; min-height: 30px }
+    .mob-gen-btn { font-size: 9px; min-height: 30px }
+    .mob-bottom-inner { height: 40px }
+    .mob-bar-btn { min-height: 40px; padding: 4px 8px; font-size: 10px }
+    .mob-del-btn { min-height: 40px; font-size: 10px }
 
     .mob-sheet.open {
-        bottom: 44px;
-        max-height: 60vh
-    }
-
-    .mob-sheet-body {
-        padding: 6px 8px 12px
+        bottom: 40px;
+        max-height: 58vh
     }
 
     canvas#mainCanvas {
-        max-height: calc(100dvh - 38px - 42px - 44px)
+        max-height: calc(100dvh - 36px - 60px - 40px)
+    }
+
+    body.sheet-open canvas#mainCanvas {
+        max-height: calc(100dvh - 36px - 60px - 40px - 48px)
     }
 }
 
-/* ===== LANDSCAPE PHONE ===== */
 @media(max-height:500px) and (max-width:900px) {
-    .topbar {
-        height: 34px
-    }
-
-    .mob-ai-bar {
-        padding: 3px 6px
-    }
-
-    .mob-ai-input {
-        min-height: 30px
-    }
-
-    .mob-bottom-bar {
-        height: 40px
-    }
+    .topbar { height: 32px }
+    .mob-top-bar { padding: 2px 4px }
+    .mob-bottom-inner { height: 36px }
 
     .mob-sheet.open {
-        max-height: 55vh
+        max-height: 50vh;
+        bottom: 36px
     }
 
     canvas#mainCanvas {
-        max-height: calc(100dvh - 34px - 36px - 40px)
+        max-height: calc(100dvh - 32px - 50px - 36px)
     }
 }
 
-/* ===== DESKTOP LARGE ===== */
-@media(min-width:1400px) {
-    .left-sb {
-        width: 280px
-    }
-
-    .bottom-panel {
-        height: 200px
-    }
-}
-
-/* ===== DESKTOP ONLY (> 900px) ===== */
 @media(min-width:901px) {
-    .mob-menu-btn {
-        display: none !important
-    }
+    .mob-menu-btn { display: none !important }
+    .mob-top-bar { display: none !important }
+    .mob-bottom-bar { display: none !important }
+    .mob-sheet { display: none !important }
+    .mob-sheet-overlay { display: none !important }
+    .mob-menu-overlay { display: none !important }
+    .mob-menu-drawer { display: none !important }
+}
 
-    .mob-ai-bar {
-        display: none !important
-    }
-
-    .mob-bottom-bar {
-        display: none !important
-    }
-
-    .mob-sheet {
-        display: none !important
-    }
-
-    .mob-sheet-overlay {
-        display: none !important
-    }
-
-    .mob-menu-overlay {
-        display: none !important
-    }
-
-    .mob-menu-drawer {
-        display: none !important
-    }
+@media(min-width:1400px) {
+    .left-sb { width: 260px }
+    .bottom-panel { height: 195px }
 }
